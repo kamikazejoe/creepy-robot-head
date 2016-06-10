@@ -1,10 +1,11 @@
 /* 
- * Project Name: Creepy Robot Head - Servos
+ * Project Name: Creepy Robot Head - MG995 Servos
  * Author: Kamikaze Joe
  * 
  * Description:
  * 
  * Consolidating servo related modules into a library for later re-use.
+ * Pre-populated with measurments from MG995 servo.
  * 
  */
 
@@ -70,20 +71,20 @@ use <kamikaze_shapes.scad>;
 
 */
 
-servo_height      = 0;
-servo_width       = 0;
-servo_depth       = 0;
+servo_height      = 38;
+servo_width       = 40;
+servo_depth       = 20;
 
-servo_sub_height  = 0;
+servo_sub_height  = 28;
 
-servo_overhang    = 0;
+servo_overhang    = 7;
 
 screw_diameter = 3;
 screw_head_diameter = 7;
 
 // Breakdown of servo width.
 // Front to Axis, Axis Diameter, Axis to Rear.
-servo_top = [ 0, 0, 0 ];
+servo_top = [ 6.75, 6.0, 27.25 ];
 
 print_gap = 2;
 

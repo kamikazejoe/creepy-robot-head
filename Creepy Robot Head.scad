@@ -31,7 +31,7 @@ vector = [ // aka: A matrix or array.
 
 // *** INCLUDE/USE LIBRARIES *** //
 //include <shapes.scad>;
-//include <fillets.scad>;
+include <fillets.scad>;
 //include <joesmodules.scad>;
 
 //Other Robot Head Parts
@@ -40,6 +40,7 @@ include <bottom-jaw.scad>;
 include <upper-jaw.scad>;
 include <mid-deck.scad>;
 include <upper-deck.scad>;
+include <neck.scad>;
 //include <camera_mount.scad>;
 
 
@@ -50,8 +51,15 @@ standard_fn = 20;
 // *** MODULES AND FUNCTIONS *** //
 
 module build_it() {
+
+	translate([0,0,0]) {
+		
+		x_neck_A();
+		x_neck_B();
+		
+	}
 	
-	translate(0,0,0) {
+	translate([0,0,100]) {
 		
 		scale([0.25,0.25,0.25])
 			translate([0,0,0])

@@ -8,6 +8,12 @@
  * 
  */
 
+/* *** TODO LIST ***
+ * 
+ * Tab to spaces
+ * 
+ */ 
+
 /* ***** Cheats *****
 
 translate([0,0,0])
@@ -89,6 +95,21 @@ module triangle_cut_out(triangle_height, length, corner_radius, mod_fn=$fn) {
     }
 }
 
+
+
+module recessed_screw_cutout( recess_depth, 
+                              recess_diam, 
+                              screw_length, 
+                              screw_diam, 
+                              mod_fn=$fn) {
+    
+    translate([ 0, 0, screw_length ])
+    cylinder( h=recess_depth, d=recess_diam, $fn=mod_fn );
+    
+
+    cylinder( h=screw_length, d=screw_diam, $fn=mod_fn );
+    
+}
 
 // Build_it function just for testing out each module
 // during development.
