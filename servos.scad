@@ -78,9 +78,6 @@ servo_sub_height  = 0;
 
 servo_overhang    = 0;
 
-screw_diameter = 3;
-screw_head_diameter = 7;
-
 // Breakdown of servo width.
 // Front to Axis, Axis Diameter, Axis to Rear.
 servo_top = [ 0, 0, 0 ];
@@ -95,8 +92,8 @@ servo_cavity = [ servo_sub_height + print_gap,
                  servo_dimension[1] + print_gap,   // Width
                  servo_dimension[2] + print_gap ]; // Depth
                       
-servo_recess = [ servo_width + servo_overhang,
-                 servo_depth,
+servo_recess = [ servo_width + (servo_overhang * 2) + print_gap,
+                 servo_depth + print_gap,
 		 servo_height - servo_sub_height]; 
 
 standard_fn = 20;

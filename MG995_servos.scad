@@ -71,6 +71,9 @@ use <kamikaze_shapes.scad>;
 
 */
 
+screw_diameter = 0;
+screw_head_diameter = 0;
+
 servo_height      = 38;
 servo_width       = 40;
 servo_depth       = 20;
@@ -78,9 +81,6 @@ servo_depth       = 20;
 servo_sub_height  = 28;
 
 servo_overhang    = 7;
-
-screw_diameter = 3;
-screw_head_diameter = 7;
 
 // Breakdown of servo width.
 // Front to Axis, Axis Diameter, Axis to Rear.
@@ -96,8 +96,8 @@ servo_cavity = [ servo_sub_height + print_gap,
                  servo_dimension[1] + print_gap,   // Width
                  servo_dimension[2] + print_gap ]; // Depth
                       
-servo_recess = [ servo_width + servo_overhang,
-                 servo_depth,
+servo_recess = [ servo_width + (servo_overhang * 2) + print_gap,
+                 servo_depth + print_gap,
 		 servo_height - servo_sub_height]; 
 
 standard_fn = 20;

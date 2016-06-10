@@ -149,52 +149,6 @@ standard_fn = 20;
 
 // *** MODULES AND FUNCTIONS *** //
 
-// Function to create a triangluar prism shape or wedge
-module wedge(triangle_height, triangle_base, length) {
-  
-  
-    linear_extrude(height = length, 
-           center = false, 
-           convexity = 10, 
-           twist = 0)
-           
-    polygon(
-           points=[ [0,0],
-              [0,triangle_height],
-                [triangle_base,triangle_height] ],
-    
-             paths=[ [0,1,2] ]
-             );
-}
-
-
-
-// Rounded isoceles right triangular shape.
-// Intended to cut out of flat panels to save space and weight
-module triangle_cut_out(triangle_height, length, corner_radius, mod_fn=$fn) {
-  
-  translate([corner_radius, corner_radius,0]) 
-    // Recenter minkowski origin to (0,0).
-    minkowski() {
-        linear_extrude(height = length, 
-                       center = true, 
-                       convexity = 10, 
-                       twist = 0)
-                       
-        polygon( 
-            points=[ [0,0,],
-                     [triangle_height - ( 2 * corner_radius ),0],
-                     [0,triangle_height - ( 2 * corner_radius )] ],
-                     
-            paths=[ [0,1,2] ]
-        );
-        
-        cylinder(h=length, r=corner_radius);
-    }
-}
-
-
-
 // Basic shape created for the tooth.
 module tooth(pos_vector, tooth_dim, mod_fn=$fn) {
   
