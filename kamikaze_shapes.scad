@@ -30,7 +30,7 @@ translate([0,0,0])
 
 // *** VARIABLES ***
 standard_fn = 20;
-
+print_gap = 0;
 
 // *** MODULES AND FUNCTIONS *** //
 

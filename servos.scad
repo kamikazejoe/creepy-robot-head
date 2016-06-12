@@ -81,6 +81,13 @@ servo_overhang    = 0;
 // Breakdown of servo width.
 // Front to Axis, Axis Diameter, Axis to Rear.
 servo_top = [ 0, 0, 0 ];
+// Breakdown of the servo height.
+// Bottom to cable,  
+// Calbe width,
+// Cable to Overhange,  
+// Overhange width, 
+// Overhange to Top.
+servo_side = [ 0.0, 0.0, 0.0, 0.0, 0.0 ];
 
 print_gap = 2;
 

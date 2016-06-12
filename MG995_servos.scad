@@ -52,13 +52,13 @@ use <kamikaze_shapes.scad>;
             6.0
             ||
 ~6.0 >  |------------------|      ---
-~2.6 >-------------------------    |
+~3.0 >-------------------------    |
         |                  | ^ 7.0 |
         |                  |       |
-        | < 28.00          |       38 Height
+20.0 >  | < 28.00          |       38 Height
         |                  |       |
-     ===|                  |       |
-        |__________________|      ---
+4.0 >===|                  |       |
+4.0 >   |__________________|      ---
 
         |------ 40.0 ------| 
 		Width
@@ -85,6 +85,14 @@ servo_overhang    = 7;
 // Breakdown of servo width.
 // Front to Axis, Axis Diameter, Axis to Rear.
 servo_top = [ 6.75, 6.0, 27.25 ];
+
+// Breakdown of the servo height.
+// Bottom to cable,  
+// Calbe width,
+// Cable to Overhange,  
+// Overhange width, 
+// Overhange to Top.
+servo_side = [ 4.0, 4.0, 20.0, 3.0, 6.0 ];
 
 print_gap = 2;
 

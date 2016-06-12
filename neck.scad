@@ -11,7 +11,7 @@
 
 /* *** TODO LIST ***
  * 
- * Don't forget the cable channels!
+ *
  * 
  */ 
 
@@ -28,9 +28,9 @@ translate([0,0,0])
 
 vector = [ // aka: A matrix or array.
 [0, 0, 0],          // vector[0][0,1,2]
-[0, 0, 0],     		// vector[1]
-[0, 0, 0],			// vector[2]
-[0, 0, 0]      		// vector[3]
+[0, 0, 0],        // vector[1]
+[0, 0, 0],      // vector[2]
+[0, 0, 0]         // vector[3]
 ];
         
 
@@ -78,7 +78,7 @@ x_neck_radius =  ( servo_top[1] / 2 )
                  + servo_top[2]
                  + servo_overhang
                  + screw_head_diameter + print_gap
-                 + screw_diameter;
+                 + screw_diameter + print_gap;
                   //   Half the axis diameter
                   // + Remaining width of the server
                   // + servo overhang
@@ -88,14 +88,15 @@ x_neck_radius =  ( servo_top[1] / 2 )
 
 
 screw_diameter = 3;
-screw_head_diameter = 7;
+screw_head_diameter = 6;
                   
-screw_diam   = screw_diameter + print_gap;
+screw_diam   = screw_diameter;
 screw_length = screw_diameter + 1;
 recess_diam  = screw_head_diameter + print_gap;
 recess_depth = x_neck_radius - screw_diam - ( recess_diam / 2 );
 
 standard_fn = 100;
+print_gap = 2;
 
 
 
@@ -138,9 +139,12 @@ module x_neck_base_half( x_neck_height, x_neck_radius, mod_fn=$fn ) {
 
 
 // Make room for the servo's pigtail.
-module cable_path_cutout() {
-    
-    
+module cable_path_cutout( height, diam ) {
+  
+  cble_co_diam = diam;
+  cble_co_depth = height;
+  
+  cylinder( h=cble_co_depth, d=cble_co_diam);
     
 }
 
@@ -199,11 +203,14 @@ module x_collar_mount() {
           fillet_linear_i(height, diam / 2, fillet_fn=standard_fn);
     }
     
-    translate([0,0, height - screw_length])
-      cylinder( h=screw_length, d=screw_diam );
+    translate([0,0,0])
+      cylinder( h=height, d=screw_diam );
     
   }
 }
+
+
+
 
 // Left half of the base for the x-axis servo
 module x_neck_A() {
@@ -231,6 +238,18 @@ module x_neck_A() {
     
     col_mnt_loc = [ col_mnt_loc_x, col_mnt_loc_y, col_mnt_loc_z ];
     
+    cble_co_diam = servo_side[1] + print_gap;
+    cble_co_depth = x_neck_radius - servo_top[2];
+    
+    cble_co_loc_x = x_neck_radius;
+    cble_co_loc_y = 0;
+    cble_co_loc_z = servo_side[0];
+  
+    cble_co_loc = [ cble_co_loc_x, cble_co_loc_y, cble_co_loc_z ];
+    
+    
+    
+    
     difference() {
         
         
@@ -250,10 +269,10 @@ module x_neck_A() {
         translate(servo_rec_loc)
             rotate([0,0,0])
                 servo_recess_cutout();
-        
-        translate([0,0,0])
-            rotate([0,0,0])
-                cable_path_cutout();
+                
+        translate(cble_co_loc)
+            rotate([0,-90,0])
+                cable_path_cutout( cble_co_depth, cble_co_diam );
                 
                 
                 
@@ -276,10 +295,11 @@ module x_neck_A() {
                 
     }
     
+    // Poor man's bearings.
     translate([0,0,x_neck_height]) // Will need to be adjusted for servo horn.
       rotate([0,0,-72])
-        make_ring_of(x_neck_radius - screw_diam, 5, 180)
-          sphere(3);
+        make_ring_of(screw_rec_loc_x, 5, 180)
+          sphere(screw_diam);
           
     
     // Collar mount points
@@ -305,7 +325,7 @@ module build_it() {
     
     //dummy_servo();
     //servo_cutout();
-	//x_neck_base();
+  //x_neck_base();
     //x_neck_base_half();
     //recessed_screw_cutout( 10, 10, 5, 5 );
     x_neck_A();
