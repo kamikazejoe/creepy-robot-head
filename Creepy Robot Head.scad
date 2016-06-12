@@ -5,6 +5,10 @@
  * Description:
  * 
  * 3D Models of Creepy Robot Head that will do stuff
+ * 
+ * This isn't really a usable file.  
+ * It is just a mock-up for reference.
+ * 
  */
 
 /* *** TODO LIST ***
@@ -58,6 +62,20 @@ module build_it() {
 		x_neck_B();
 		
 	}
+  
+  translate([0,0,50]) {
+		  
+      rotate([180,0,0])
+        x_rotor_disc();
+		
+  }
+  
+  translate([0,0,60]) {
+		  
+      rotate([180,0,0])
+        x_collar_ring();
+		
+  }
 	
 	translate([0,0,100]) {
 		

@@ -11,7 +11,7 @@
 
 /* *** TODO LIST ***
  * 
- *
+ * y-axis screw hole mounts in rotor disc.
  * 
  */ 
 
@@ -152,23 +152,84 @@ module cable_path_cutout( height, diam ) {
 
 module x_rotor_disc() {
   
+  disc_diam = 2 * x_neck_radius;
+  disc_height = screw_head_diameter;
+  //disc_height = servo_top[1];
   
+  disc_track_loc = x_neck_radius - screw_diam - ( recess_diam / 2 );
+
+  
+  difference() {
+    
+    cylinder( h=disc_height, d=disc_diam);
+    
+    cylinder( h=disc_height, d=screw_head_diameter + print_gap );
+    
+    translate([0,0,disc_height + print_gap])
+      rotate_extrude()
+        translate([disc_track_loc,0,0])
+          circle( r=screw_diam + print_gap );
+  }
   
 }
 
 
 module x_collar_ring() {
   
+  ring_height = screw_head_diameter * 2;
   
+  cutout_radius = x_neck_radius - screw_diam - ( recess_diam / 2 );
+  groove_radius = x_neck_radius + print_gap;
+  ring_radius = x_neck_radius + screw_diam + print_gap;
+  
+  col_mnt_loc_x = 0;
+  col_mnt_loc_y = 0 - x_neck_radius - (recess_diam / 2) + 1;
+  col_mnt_loc_z = 0;
+  
+  col_mnt_loc = [ col_mnt_loc_x, col_mnt_loc_y, col_mnt_loc_z ];
+    
+  difference() {
+    
+    union() {
+      
+      cylinder( h=ring_height, r=ring_radius );
+        
+      // Collar mount points
+      translate(col_mnt_loc)
+        x_collar_mount(ring_height, recess_diam);
+            
+      // Collar mount points
+      mirror([0,1,0])
+        translate(col_mnt_loc)
+          x_collar_mount(ring_height, recess_diam);
+    }
+    
+    
+    translate([0,0, ring_height / 2])
+      cylinder( h=ring_height, r=groove_radius );
+    
+    cylinder( h=ring_height, r=cutout_radius );
+    
+    translate(col_mnt_loc)
+      cylinder( h=ring_height, d=screw_diam );
+    
+    mirror([0,1,0])
+      translate(col_mnt_loc)
+        cylinder( h=ring_height, d=screw_diam );
+
+  }
+        
+
+
   
 }
 
 
 
-module x_collar_mount() {
+module x_collar_mount( height, diam ) {
   
-  height = x_neck_height;
-  diam = recess_diam;
+  //height = x_neck_height;
+  //diam = recess_diam;
   
   lfx_loc = 0 - (diam / 2);
   lfy_loc = diam / 2;
@@ -304,7 +365,7 @@ module x_neck_A() {
     
     // Collar mount points
     translate(col_mnt_loc)
-          x_collar_mount();
+          x_collar_mount(x_neck_height, recess_diam);
     
 }
 
@@ -328,9 +389,11 @@ module build_it() {
   //x_neck_base();
     //x_neck_base_half();
     //recessed_screw_cutout( 10, 10, 5, 5 );
-    x_neck_A();
+    //x_neck_A();
     //x_neck_B();
     //servo_recess_cutout();
+    //x_rotor_disc();
+    x_collar_ring();
 }
 
 // *** MAIN ***  //
