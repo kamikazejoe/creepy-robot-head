@@ -500,6 +500,24 @@ module y_servo_block_B() {
 
 module y_servo_block_inverse() {
   
+  y_axis_radius = ( servo_overhang * 3 ) // 3 time for thicker structure
+                  + servo_top[0] 
+                  + ( servo_top[1] / 2)
+                  + print_gap;
+
+  y_axis_depth = servo_dimension[0];
+  
+  inv_blk_width = servo_dimension[1];
+  
+  difference() {
+    
+    cube([ inv_blk_width, y_axis_radius, y_axis_depth]);
+    
+    translate([ 0, y_axis_radius / 2, 0 ])
+      cylinder( h=y_axis_depth, r=y_axis_radius);
+    
+  }
+  
 }
 
 module y_axis_pivot() {
@@ -523,6 +541,7 @@ module build_it() {
     //x_collar_ring();
     //y_servo_block_A();
     //y_servo_block_B();
+    y_servo_block_inverse();
 }
 
 // *** MAIN ***  //

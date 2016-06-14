@@ -70,37 +70,55 @@ module build_it() {
 		
   }
   
+
+  
   translate([0,0,60]) {
 		  
       rotate([180,0,0])
         x_collar_ring();
 		
   }
-	
-	translate([-50,0,100]) {
-		
-		scale([0.25,0.25,0.25])
-			translate([0,0,0])
-				rotate([0,0,0])
-					bottom_jaw();
-		
-		scale([0.25,0.25,0.25])
-			translate([0,0,jaw_dimension[1]])
-				rotate([180,0,0])
-					upper_jaw();
-			}
-      
-
   
-  translate([-25,-75,200]) {
+    translate([0,0 - servo_dimension[2], 100]) {
+		  
+      rotate([0,90,90])
+        y_servo_block_A();
+	
+      rotate([0,90,90])
+        y_servo_block_B();
+
+  }
+	
+	
+	
+  translate([-75,0,150]) {
+	  
+  scale([0.25,0.25,0.25])
+    translate([0,0,0])
+      rotate([0,0,0])
+	bottom_jaw();
+	  
+  scale([0.25,0.25,0.25])
+    translate([0,0,jaw_dimension[1]])
+      rotate([180,0,0])
+	upper_jaw();
+  }
+
+
+
+  translate([-75,-75,200]) {
+    build_with_mount_holes();
+		
+  }
+  
+  
+  
+  translate([-50,-75,250]) {
     build_upper_plate();
 		
   }
   
-  translate([-50,-75,150]) {
-    build_with_mount_holes();
-		
-  }
+
   
 	
 }
