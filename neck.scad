@@ -139,12 +139,16 @@ module x_neck_base_half( x_neck_height, x_neck_radius, mod_fn=$fn ) {
 
 
 // Make room for the servo's pigtail.
-module cable_path_cutout( height, diam ) {
+module cable_path_cutout( depth, diam, height ) {
   
   cble_co_diam = diam;
-  cble_co_depth = height;
+  cble_co_depth = depth;
+  cble_co_height = height;
   
   cylinder( h=cble_co_depth, d=cble_co_diam);
+  
+  translate([0 - cble_co_diam, 0 - cble_co_diam / 2, 0])
+  cube([ cble_co_height, cble_co_diam, cble_co_depth ]);
     
 }
 
@@ -277,8 +281,8 @@ module x_collar_mount( height, diam ) {
 module x_neck_A() {
     
     servo_loc = [ 0 - servo_top[0] - ( servo_top[1] / 2 ),
-                  servo_cavity[2] / 2,
-                  servo_cavity[0]];
+                  0 - servo_cavity[1] / 2,
+                  0]; //servo_cavity[0]];
     
     screw_rec_loc_x = x_neck_radius - screw_diam - ( recess_diam / 2 );
     screw_rec_loc_y = 1;
@@ -300,15 +304,14 @@ module x_neck_A() {
     col_mnt_loc = [ col_mnt_loc_x, col_mnt_loc_y, col_mnt_loc_z ];
     
     cble_co_diam = servo_side[1] + print_gap;
-    cble_co_depth = x_neck_radius - servo_top[2];
+    cble_co_depth = x_neck_radius - servo_top[0];
+    cble_co_height = servo_side[0] + ( servo_side[1] / 2 );
     
-    cble_co_loc_x = x_neck_radius;
+    cble_co_loc_x = 0 - servo_top[0];
     cble_co_loc_y = 0;
     cble_co_loc_z = servo_side[0];
   
     cble_co_loc = [ cble_co_loc_x, cble_co_loc_y, cble_co_loc_z ];
-    
-    
     
     
     difference() {
@@ -324,7 +327,7 @@ module x_neck_A() {
         
         // Servo cavity
         translate(servo_loc)
-            rotate([90,90,0])
+            rotate([0,0,0])
                 servo_cutout();
                 
         translate(servo_rec_loc)
@@ -333,7 +336,7 @@ module x_neck_A() {
                 
         translate(cble_co_loc)
             rotate([0,-90,0])
-                cable_path_cutout( cble_co_depth, cble_co_diam );
+                cable_path_cutout( cble_co_depth, cble_co_diam, cble_co_height );
                 
                 
                 
@@ -380,6 +383,130 @@ module x_neck_B() {
 
 
 
+module y_servo_block_A() {
+  
+  y_axis_radius = ( servo_overhang * 3 ) // 3 time for thicker structure
+                  + servo_top[0] 
+                  + ( servo_top[1] / 2);
+  
+  y_axis_depth = servo_dimension[0];
+  
+  add_block_length = [ y_axis_radius + ( servo_overhang * 3 ),
+                       2 * y_axis_radius,
+                       y_axis_depth ];
+  
+  abl_loc = [ 0 - add_block_length[0],
+              0 - ( add_block_length[1] / 2),
+              0];
+  
+  servo_loc = [ 0 - (servo_top[1] / 2) - servo_top[2],
+                0 - servo_cavity[1] / 2,
+                0];
+    
+
+  servo_rec_loc_x = 0 - (servo_top[1] / 2) - servo_top[2] - servo_overhang;
+  servo_rec_loc_y = 0 - (servo_recess[1] / 2);
+  servo_rec_loc_z =  y_axis_depth - servo_recess[2];
+  
+  servo_rec_loc = [servo_rec_loc_x, servo_rec_loc_y, servo_rec_loc_z];
+  
+  cble_co_diam = servo_side[1] + print_gap;
+  cble_co_depth = y_axis_radius - (servo_top[1] / 2) - servo_top[0];
+  cble_co_height = servo_side[0] + ( servo_side[1] / 2 );
+
+  
+  cble_co_loc_x = 0 + cble_co_depth + (servo_top[1] / 2) + servo_top[0];
+  cble_co_loc_y = 0;
+  cble_co_loc_z = servo_side[0];
+
+  cble_co_loc = [ cble_co_loc_x, cble_co_loc_y, cble_co_loc_z ];
+  
+  chop_in_half = [ add_block_length[0] + y_axis_radius,
+                  y_axis_radius,
+                  y_axis_depth ];
+                  
+  screw_rec_loc_x0 = (chop_in_half[0] / 2) 
+                     - screw_diam 
+                     - ( recess_diam / 2 ) 
+                     - (y_axis_radius / 2);
+                     
+  screw_rec_loc_y0 = 1;
+  screw_rec_loc_z0 = y_axis_depth / 2;
+  
+  screw_rec_loc_x1 = 0 - add_block_length[0] + screw_diam + ( recess_diam / 2 ) + servo_overhang;
+  screw_rec_loc_y1 = 1;
+  screw_rec_loc_z1 = y_axis_depth / 2;
+    
+  
+  screw_rec_loc = [[screw_rec_loc_x0, screw_rec_loc_y0, screw_rec_loc_z0],
+                   [screw_rec_loc_x1, screw_rec_loc_y1, screw_rec_loc_z1]];
+                
+           
+                            
+  difference() {
+    
+    union() {
+    
+      cylinder( h=y_axis_depth, r=y_axis_radius );
+      
+      translate(abl_loc)
+        cube(add_block_length);
+    
+    }
+    
+    // Servo cavity
+    translate(servo_loc)
+      rotate([0,0,0])
+        servo_cutout();
+            
+    translate(servo_rec_loc)
+      rotate([0,0,0])
+        servo_recess_cutout();
+    
+    translate(cble_co_loc)
+        rotate([0,-90,0])
+          cable_path_cutout( cble_co_depth, cble_co_diam, cble_co_height );
+          
+    translate([ 0 - add_block_length[0], 0, 0 ])
+      cube(chop_in_half);
+      
+    
+    // Screw points        
+    translate(screw_rec_loc[0])
+      rotate([90,0,0])
+        recessed_screw_cutout(recess_depth,
+                              recess_diam,
+                              screw_length,
+                              screw_diam);
+            
+    translate(screw_rec_loc[1])
+      rotate([90,0,0])
+        recessed_screw_cutout(recess_depth,
+                              recess_diam,
+                              screw_length,
+                              screw_diam);
+
+  }
+}
+
+
+
+module y_servo_block_B() {
+  
+  mirror([0,1,0]) y_servo_block_A();
+  
+}
+
+
+module y_servo_block_inverse() {
+  
+}
+
+module y_axis_pivot() {
+  
+}
+
+
 // Build_it function just for testing out each module
 // during development.
 module build_it() {
@@ -393,7 +520,9 @@ module build_it() {
     //x_neck_B();
     //servo_recess_cutout();
     //x_rotor_disc();
-    x_collar_ring();
+    //x_collar_ring();
+    //y_servo_block_A();
+    //y_servo_block_B();
 }
 
 // *** MAIN ***  //

@@ -95,10 +95,10 @@ servo_dimension = [ servo_height,
                     servo_width,
                     servo_depth ];
 
-servo_cavity = [ servo_sub_height + print_gap,
-                 servo_dimension[1] + print_gap,   // Width
-                 servo_dimension[2] + print_gap ]; // Depth
-                      
+servo_cavity = [ servo_dimension[1] + print_gap,   // Width
+                 servo_dimension[2] + print_gap, // Depth
+                 servo_sub_height + print_gap ];
+                 
 servo_recess = [ servo_width + (servo_overhang * 2) + print_gap,
                  servo_depth + print_gap,
 		 servo_height - servo_sub_height]; 

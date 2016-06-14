@@ -77,7 +77,7 @@ module build_it() {
 		
   }
 	
-	translate([0,0,100]) {
+	translate([-50,0,100]) {
 		
 		scale([0.25,0.25,0.25])
 			translate([0,0,0])
@@ -89,6 +89,19 @@ module build_it() {
 				rotate([180,0,0])
 					upper_jaw();
 			}
+      
+
+  
+  translate([-25,-75,200]) {
+    build_upper_plate();
+		
+  }
+  
+  translate([-50,-75,150]) {
+    build_with_mount_holes();
+		
+  }
+  
 	
 }
 

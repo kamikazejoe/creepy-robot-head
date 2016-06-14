@@ -68,7 +68,7 @@ module raspi_mount() {
 
 
 // Basic flat base plate shape.
-module base_plate() {
+module m_base_plate() {
     linear_extrude(height = 5, center = false, convexity = 10, twist = 0)
         polygon(
             points=[ [10,0],[0,20],[0,130],[10,150],[130,150],[150,130],[150,20],[130,0] ],
@@ -114,7 +114,7 @@ module servo_screws() {
 }
 
 // Screw mounting slot
-module cut_slot() {
+module m_cut_slot() {
     //translate([5,5,-3])
       //  rotate([0,0,0])
             hull() {
@@ -125,29 +125,29 @@ module cut_slot() {
                 }
 }
 
-module slot_grid() { // Woo-hoo!  The for-loop worked!
+module m_slot_grid() { // Woo-hoo!  The for-loop worked!
     for ( i = [15 : 10 : 130] )
     {
         translate([i, 5, -3])
-            cut_slot();
+            m_cut_slot();
     }
     
         for ( i = [15 : 10 : 130] )
     {
         translate([i, 85, -3])
-            cut_slot();
+            m_cut_slot();
     }
 }
 
 // Add mounting brackets to gridded base plate
-module grid_plate() {
+module m_grid_plate() {
 
     raspi_mount();
     servo_plate();
     
     difference() {
-        base_plate();
-        slot_grid();
+        m_base_plate();
+        m_slot_grid();
     }
 
 }
@@ -155,7 +155,7 @@ module grid_plate() {
 // Build the grid plate with mounting holes.
 module build_with_mount_holes() {
     difference() {
-        grid_plate();
+        m_grid_plate();
         servo_cavity();
         servo_screws();
         translate([58.4,47,-5])
