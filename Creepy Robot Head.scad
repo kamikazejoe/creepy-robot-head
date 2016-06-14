@@ -79,7 +79,18 @@ module build_it() {
 		
   }
   
-    translate([0,0 - servo_dimension[2], 100]) {
+  
+  
+  translate([ servo_dimension[1] / 2, 0 - servo_dimension[1] / 2, 110 ]) {
+		  
+    rotate([0,90,90])
+      y_servo_block_inverse();
+		
+  }
+  
+  
+  
+    translate([0,0 - servo_dimension[2], 120]) {
 		  
       rotate([0,90,90])
         y_servo_block_A();
@@ -88,8 +99,8 @@ module build_it() {
         y_servo_block_B();
 
   }
-	
-	
+  
+
 	
   translate([-75,0,150]) {
 	  

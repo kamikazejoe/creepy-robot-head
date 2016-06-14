@@ -440,7 +440,14 @@ module y_servo_block_A() {
   
   screw_rec_loc = [[screw_rec_loc_x0, screw_rec_loc_y0, screw_rec_loc_z0],
                    [screw_rec_loc_x1, screw_rec_loc_y1, screw_rec_loc_z1]];
-                
+                   
+  mount_screw_loc0 = [ 0 - add_block_length[0],
+                       0 - (y_axis_radius / 2),
+                       servo_cavity[2] ];
+  
+  mount_screw_loc1 = [ 0 - add_block_length[0],
+                       0 - (y_axis_radius / 2),
+                       servo_dimension[1] - servo_cavity[2] ];               
            
                             
   difference() {
@@ -485,6 +492,15 @@ module y_servo_block_A() {
                               recess_diam,
                               screw_length,
                               screw_diam);
+                              
+    translate(mount_screw_loc0)
+      rotate([0,90,0])
+        cylinder( h=screw_length, d=screw_diam );
+    
+    
+    translate(mount_screw_loc1)
+      rotate([0,90,0])
+        cylinder( h=screw_length, d=screw_diam );
 
   }
 }
@@ -541,7 +557,7 @@ module build_it() {
     //x_collar_ring();
     //y_servo_block_A();
     //y_servo_block_B();
-    y_servo_block_inverse();
+    //y_servo_block_inverse();
 }
 
 // *** MAIN ***  //
