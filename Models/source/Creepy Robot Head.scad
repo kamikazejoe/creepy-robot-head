@@ -65,7 +65,7 @@ module build_it() {
   
   translate([0,0,50]) {
 		  
-      rotate([180,0,0])
+      rotate([180,0,90])
         x_rotor_disc();
 		
   }
@@ -88,6 +88,19 @@ module build_it() {
 		
   }
   
+  translate([ servo_dimension[1] / 2, servo_dimension[1] * .75, 110 ]) {
+		  
+    rotate([0,90,90])
+      y_axis_pivot();
+		
+  }
+  
+  translate([ servo_dimension[1] / 2, 0 - servo_dimension[1], 110 ]) {
+		  
+    rotate([0,90,90])
+      y_axis_pivot();
+		
+  }
   
   
     translate([0,0 - servo_dimension[2], 120]) {
