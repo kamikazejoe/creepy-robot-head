@@ -111,6 +111,17 @@ module recessed_screw_cutout( recess_depth,
     
 }
 
+// Taken and modified from children.scad in Examples.
+module make_ring_of(radius, count, theta)
+{
+    for (a = [0 : count - 1]) {
+        angle = a * theta / count;
+        translate(radius * [sin(angle), -cos(angle), 0])
+            rotate([0, 0, angle])
+                children();
+    }
+}
+
 // Build_it function just for testing out each module
 // during development.
 module build_it() {

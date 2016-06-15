@@ -44,6 +44,7 @@ fillet_linear_o(l, fillet_r, fillet_angle=90, fillet_fn=0, add=0.02)
 // *** INCLUDE/USE LIBRARIES *** //
 //include <shapes.scad>;
 include <fillets.scad>;
+include <MG90S_servos.scad>;
 use <kamikaze_shapes.scad>;
 
 // Same funcitonality will be built into OpenSCAD 2016.XX.
@@ -70,11 +71,9 @@ use <partial_rotate_extrude.scad>;
 // The height of the lower hinge is to accommodate the
 // upper and lower jaw fitting together.
 
-Jaw_Length = 230;
-Jaw_Width  = 150;
-Jaw_Height = 70;
-
-
+jaw_length = 60;
+jaw_width  = 40;
+jaw_height = 20;
 
 
 // Tooth Dimensions
@@ -83,21 +82,20 @@ Jaw_Height = 70;
 // r is the radius of curved corners.
 // Embedded 'r' into the gum line.
 
-Tooth_Length = 35;
-Tooth_Width  = 18;
-Tooth_Height = 40;
-Tooth_Radius = 5;
+tooth_length = 9;
+tooth_width  = 5;
+tooth_height = 10;
+tooth_radius = 1;
 
-
-
+num_of_teeth = 14;
 
 //jaw_dimension = [230,150,70];
-jaw_dimension = [ Jaw_Length, Jaw_Width, Jaw_Height ];
+jaw_dimension = [ jaw_length, jaw_width, jaw_height ];
 
-tooth_dim = [ Tooth_Length,
-        Tooth_Width,
-        Tooth_Height,
-        Tooth_Radius ]; 
+tooth_dim = [ tooth_length,
+              tooth_width,
+              tooth_height,
+              tooth_radius ]; 
 
 // Measurements for the jaw's gum line 
 
@@ -108,41 +106,12 @@ jaw_diam = jaw_dimension[1] - ( tooth_dim[1] * 1.25 );
 // Dimensions of the gum line, [x,y]
 // ( actually y,z when rotated for the extrusion.)
 rect_dim = [ ( tooth_dim[1] * 1.25 ),
-       (jaw_dimension[0] - jaw_dimension[1]) / 2 ];
-       
-       
-
-// Vector for location of the teeth.
-// Manually positioned to keep them organic looking.
-// [x,y,z,r] where r is the angle of rotation along the z-axis
+             (jaw_dimension[0] - jaw_dimension[1]) / 2 ];
 
 tz = rect_dim[1] - tooth_dim[3]; // z coordinate of the teeth.
 
-teeth_pos = [
 
-// Need to math theses...
-
-        // Left Half
-        [-21,-141,tz,0],
-        [-54,-132,tz,-13],
-        [-83,-115,tz,-30],
-        [-108,-93,tz,-44],
-        [-128,-65,tz,-57],
-        [-139,-33,tz,-72],
-        [-142,-2,tz,-88],
-        
-        // Right Half
-        [-15,137,tz,0],
-        [-46,130,tz,13],
-        [-75,114,tz,30],
-        [-100,92,tz,44],
-        [-120,64,tz,57],
-        [-132,34,tz,72],
-        [-135,3,tz,88]
-        
-        ];
-
-standard_fn = 20;      
+standard_fn = 100;      
 
 
 
@@ -150,18 +119,11 @@ standard_fn = 20;
 // *** MODULES AND FUNCTIONS *** //
 
 // Basic shape created for the tooth.
-module tooth(pos_vector, tooth_dim, mod_fn=$fn) {
-  
-  x = pos_vector[0];
-  y = pos_vector[1];
-  z = pos_vector[2];
-  r = pos_vector[3];
-  
-    translate([x,y,z])
-        rotate([0,0,r])
+//module tooth(pos_vector, tooth_dim, mod_fn=$fn) 
+module tooth(tooth_dim, mod_fn=$fn) {
+
       minkowski() {
       
-        //cube([25,6,30]);
         cube( [ tooth_dim[0] - ( 2 * tooth_dim[3] ),
                 tooth_dim[1] - ( 2 * tooth_dim[3] ),
                 tooth_dim[2] - ( 2 * tooth_dim[3] )] );
@@ -174,12 +136,11 @@ module tooth(pos_vector, tooth_dim, mod_fn=$fn) {
 
 // Build a row of teeth.
 module teeth(mod_fn=$fn) {
-  
-  for ( i = teeth_pos ) {
-    
-    tooth(i, tooth_dim, mod_fn);
-    
-  }   
+
+  translate([0,0,tz])
+    rotate([0,0,180]) 
+      make_ring_of(jaw_dimension[1] - print_gap, num_of_teeth, 180) 
+        tooth(tooth_dim);   
 }
 
 
@@ -197,7 +158,7 @@ module gum_line(jaw_diam, rect_dim) {
   
   // Right side where the jaw meets the hinge.
   translate([0,jaw_diam,0])
-    //cube([ 2 * rect_dim[1], rect_dim[0], rect_dim[1]]);
+
     cube([ jaw_dimension[0] - jaw_dimension[1], 
            rect_dim[0], 
            rect_dim[1] ]);
@@ -219,7 +180,7 @@ module half_jaw() {
         
     gum_line(jaw_diam, rect_dim);
         
-        teeth(); 
+    teeth(); 
 
 }
 
@@ -332,7 +293,7 @@ module upper_hinge_cutout(x, y, z, x_loc, y_loc) {
 module left_upper_hindge_cutout() {
   
   x = (jaw_dimension[0] - jaw_dimension[1]) / 2;
-  y = 5; // Make smaller when scaling is fixed.
+  y = print_gap;
   z = (jaw_dimension[0] - jaw_dimension[1]) / 2; 
 
   x_loc = x; 
@@ -347,7 +308,7 @@ module left_upper_hindge_cutout() {
 module right_upper_hindge_cutout() {
   
   x = (jaw_dimension[0] - jaw_dimension[1]) / 2;
-  y = 5; // Make smaller when scaling is fixed.
+  y = print_gap;
   z = (jaw_dimension[0] - jaw_dimension[1]) / 2; 
   
   x_loc = x; 
@@ -363,11 +324,6 @@ module bottom_jaw() {
    half_jaw();
    left_hindge();
    right_hindge();
-   //mirror([0,1,0]) left_hindge();
-  // Hindge Bolt Hole
-  //translate([75,200,140])
-   //rotate([90,0,0])
-    //cylinder(h=400, d=20);
 
 }
 
@@ -391,10 +347,9 @@ module upper_jaw() {
 // during development.
 module build_it() {
 
-  scale([0.25,0.25,0.25])
-    bottom_jaw();
+  //bottom_jaw();
 
-  //upper_jaw();
+  upper_jaw();
 
 }
 
