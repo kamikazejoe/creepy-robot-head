@@ -108,7 +108,7 @@ servo_cavity = [ servo_dimension[1] + print_gap,   // Width
                       
 servo_recess = [ servo_width + (servo_overhang * 2) + print_gap,
                  servo_depth + print_gap,
-		 servo_height - servo_sub_height]; 
+                 servo_side[4] + servo_side[3]]; 
 
 standard_fn = 20;
 
