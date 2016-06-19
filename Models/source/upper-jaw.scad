@@ -1,18 +1,18 @@
-/* 
+/*
  * Project Name: Creepy Robot Head - Upper Jaw
  * Author: Kamikaze Joe
- * 
+ *
  * Description:
- * 
+ *
  * Generate model for the upper jaw of the Creepy Robot Head.
  * Simply calls the jaw library and calls for the upper jaw.
  */
 
 /* *** TODO LIST ***
- * 
+ *
  * Tab to spaces
- * 
- */ 
+ *
+ */
 
 // *** INCLUDE/USE LIBRARIES *** //
 //include <shapes.scad>;
@@ -33,13 +33,13 @@ use <jaw.scad>;
 
 /*
  * Directions:
- * 
+ *
  * Enter the desired dimension for the jaw and teeth below.
- * 
+ *
  * Everything else should calculate automatically.
- * 
+ *
  */
- 
+
 // Length, width, and height of the basic jaw. [x,y,z]
 // x should be greater than y.
 // Does not include additonal height of lower jaw hinge.
@@ -64,12 +64,12 @@ Tooth_Width  = 18;
 Tooth_Height = 40;
 Tooth_Radius = 5;
 
+standard_fn = 20;
 
 
 module build_it() {
 
-	//scale([0.25,0.25,0.25])
-		//upper_jaw();
+  upper_jaw();
 
 }
 

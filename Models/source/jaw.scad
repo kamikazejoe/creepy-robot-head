@@ -353,19 +353,35 @@ module upper_jaw_mount_plate() {
            servo_cavity[2] + servo_side[3] + servo_side[4] + servo_overhang,
            servo_recess[1] ]);
 
-  rotate([-90,0,180])
+// Fillet along the Y
+  translate([ 0 - (print_gap / 2),
 
-    translate([ 0,
-                0 - servo_recess[1] - screw_length,
-                0 - servo_recess[2] - (print_gap / 2) ])
+              servo_side[4]
+              + servo_overhang - (print_gap / 4), // Don't know why this is off by .5 mm
 
-      wedge( servo_recess[1],
-             servo_recess[1],
-             servo_cavity[2]
-             + servo_side[3]
-             + servo_side[4]
-             + servo_overhang
-             - (print_gap/2));
+              screw_length ])
+
+    rotate([0,-90,90])
+      fillet_linear_i(servo_cavity[2]
+                      + servo_side[3]
+                      + servo_side[4]
+                      + servo_overhang,
+                      servo_recess[1],
+                      fillet_fn=standard_fn);
+
+
+// Fillet along the X
+  translate([ servo_recess[0] + (servo_overhang * 2) - (print_gap / 2),
+
+              servo_side[4]
+              + servo_overhang - .5, // Don't know why this is off by .5 mm
+
+              screw_length ])
+
+    rotate([0,-90,0])
+      fillet_linear_i(servo_recess[0] + (servo_overhang * 2),
+                      servo_recess[1],
+                      fillet_fn=standard_fn);
 
 }
 
@@ -430,6 +446,7 @@ module upper_jaw() {
 
           paths=[ [0,1,2] ]
         );
+
 
   difference() {
 
