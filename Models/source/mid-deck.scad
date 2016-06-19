@@ -5,17 +5,17 @@ module raspi() {
     difference() {
         color("lightblue")
             cube([85.6,56,21]);
-    
+
 // mounting holes are 58mm x 49mm, 2.75 diameter
         translate([3.5,3.5,0])
             cylinder(h=22, d=2.75);
-        
+
         translate([3.5,52.5,0])
             cylinder(h=22, d=2.75);
-        
+
         translate([61.5,52.5,0])
             cylinder(h=22, d=2.75);
-        
+
         translate([61.5,3.5,0])
             cylinder(h=22, d=2.75);
     }
@@ -24,16 +24,16 @@ module raspi() {
 
 // Screw holes to mount Raspberry Pi.
 module screw_holes() {
-    
+
     translate([3.5,3.5,0])
         cylinder(h=22, d=2.75, $fn=20);
-    
+
     translate([3.5,52.5,0])
         cylinder(h=22, d=2.75, $fn=20);
-    
+
     translate([61.5,52.5,0])
         cylinder(h=22, d=2.75, $fn=20);
-    
+
     translate([61.5,3.5,0])
         cylinder(h=22, d=2.75, $fn=20);
 }
@@ -42,23 +42,23 @@ module screw_holes() {
 
 // Mounting bracket for Raspberry Pi
 module raspi_mount() {
-    
-    
+
+
     translate([64.4,47,0])
         difference() {
             cube([85.6,56,5]);
-        
+
         translate([6.2,6.2,-3])
             cube([73.2,43.6,10]);
-        } 
-    
+        }
+
 
 
 // Bracket
         translate([55.4,45,0])
         difference() {
             cube([89.6,60,5]);
-        
+
         translate([6.2,8.2,-3])
             cube([73.2,43.6,10]);
         }
@@ -82,7 +82,7 @@ module m_base_plate() {
 module servo_plate() {
     translate([0,35,0])
         cube([40,23,5]);
-    
+
     translate([0,93,0])
         cube([40,23,5]);
 }
@@ -93,22 +93,22 @@ module servo_plate() {
 module servo_cavity() {
     translate([5,40,-3])
         cube([24.4,12,10]);
-    
+
     translate([5,98,-3])
-        cube([24.4,12,10]);    
+        cube([24.4,12,10]);
 }
 
 // Server mounting screw holes.
 module servo_screws() {
     translate([ 5-2.2, 46, -3])
         cylinder(h=10, d=2, $fn=20);
-    
+
     translate([ 5 + 24.4 + 2.2 ,46,-3])
         cylinder(h=10, d=2, $fn=20);
-    
+
     translate([ 5-2.2, 104, -3])
         cylinder(h=10, d=2, $fn=20);
-    
+
     translate([ 5 + 24.4 + 2.2, 104, -3])
         cylinder(h=10, d=2, $fn=20);
 }
@@ -119,7 +119,7 @@ module m_cut_slot() {
       //  rotate([0,0,0])
             hull() {
                 cylinder(h=10, d=3, $fn=20);
-                    
+
                 translate([0,60,0])
                     cylinder(h=100, d=3, $fn=20);
                 }
@@ -131,7 +131,7 @@ module m_slot_grid() { // Woo-hoo!  The for-loop worked!
         translate([i, 5, -3])
             m_cut_slot();
     }
-    
+
         for ( i = [15 : 10 : 130] )
     {
         translate([i, 85, -3])
@@ -144,7 +144,7 @@ module m_grid_plate() {
 
     raspi_mount();
     servo_plate();
-    
+
     difference() {
         m_base_plate();
         m_slot_grid();
@@ -167,18 +167,18 @@ module build_with_mount_holes() {
 
 // Mount point for Camera Bracket
 module camera_mount_point() {
-    
+
     translate([0,62.5,0])
-        cube([25,25,5]);  
+        cube([25,25,5]);
 }
 
 module build_all() {
 //camera_mount_point();
-build_with_mount_holes();
+//build_with_mount_holes();
 }
 
 //projection() translate([0,0,100]) build_all();
-//build_all();
+build_all();
 
 /*
 translate([58.4,47,5])

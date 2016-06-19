@@ -46,11 +46,9 @@ use <jaw.scad>;
 // The height of the lower hinge is to accommodate the
 // upper and lower jaw fitting together.
 
-Jaw_Length = 230;
-Jaw_Width  = 150;
-Jaw_Height = 70;
-
-
+jaw_length = 60;
+jaw_width  = 40;
+jaw_height = 20;
 
 
 // Tooth Dimensions
@@ -59,10 +57,12 @@ Jaw_Height = 70;
 // r is the radius of curved corners.
 // Embedded 'r' into the gum line.
 
-Tooth_Length = 35;
-Tooth_Width  = 18;
-Tooth_Height = 40;
-Tooth_Radius = 5;
+tooth_length = 9;
+tooth_width  = 5;
+tooth_height = 10;
+tooth_radius = 1;
+
+num_of_teeth = 14;
 
 standard_fn = 20;
 

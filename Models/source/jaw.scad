@@ -11,7 +11,6 @@
 
 /* *** TODO LIST ***
  *
- * Mounting for upper jaw.
  * Need to secure servo in place.
  *
  */
@@ -110,11 +109,10 @@ rect_dim = [ ( tooth_dim[1] * 1.25 ),
 tz = rect_dim[1] - tooth_dim[3]; // z coordinate of the teeth.
 
 
-screw_diameter = 3;
+screw_diam = 3;
 screw_head_diameter = 6;
 
-screw_diam   = screw_diameter;
-screw_length = screw_diameter + 1;
+screw_length = screw_diam + 1;
 recess_diam  = screw_head_diameter + print_gap;
 recess_depth = jaw_height;
 
@@ -399,7 +397,7 @@ module upper_jaw() {
 
   screw_rec_loc_x = 0 - (jaw_radius / 2);
   screw_rec_loc_y = 0;
-  screw_rec_loc_z = 0;
+  screw_rec_loc_z = -2;
 
   screw_rec_loc = [[screw_rec_loc_x, screw_rec_loc_y, screw_rec_loc_z],
                 [ 0 - screw_rec_loc_x, screw_rec_loc_y, screw_rec_loc_z]];

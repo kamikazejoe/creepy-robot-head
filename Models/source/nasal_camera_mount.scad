@@ -43,6 +43,8 @@ use <kamikaze_shapes.scad>;
 
 // *** VARIABLES *** //
 
+plate_depth = 3; // Thickness of the camera mount.
+
 // Maths from module datasheet as a self-reminder of measurments.
 picam_screw_hole_vector = [
                            [ 2, 2, 0],
@@ -51,23 +53,24 @@ picam_screw_hole_vector = [
                            [ 2 + 12.5, 2 + 21, 0]
                           ];
 
+picam_xy = [ 24, 25 ];
+
 print_gap = 1;
 standard_fn = 20;
+screw_diam = 2 + print_gap;
 
 
 // *** MODULES AND FUNCTIONS *** //
 
 module picam_base_plate(plate_depth) {
 
-   cube([24,25,plate_depth]);
+   cube([picam_xy[0],picam_xy[1],plate_depth]);
 
 }
 
 
 
-module picam_screw_holes(plate_depth) {
-
-   screw_diam = 2 + print_gap;
+module picam_screw_holes(plate_depth, screw_diam=screw_diam) {
 
    translate(picam_screw_hole_vector[0])
       cylinder(h=plate_depth, d=screw_diam, $fn=20);
@@ -116,7 +119,7 @@ module picam_mount_plate(plate_depth) {
 // during development.
 module build_it() {
 
-  picam_mount_plate(3);
+  picam_mount_plate(plate_depth);
 
 }
 
