@@ -139,6 +139,19 @@ module servo_recess_cutout() {
   
 }
 
+module cable_path_cutout( depth, diam, height ) {
+
+  cble_co_diam = diam;
+  cble_co_depth = depth;
+  cble_co_height = height;
+
+  cylinder( h=cble_co_depth, d=cble_co_diam);
+
+  translate([0 - cble_co_diam, 0 - cble_co_diam / 2, 0])
+  cube([ cble_co_height, cble_co_diam, cble_co_depth ]);
+  
+}
+
 // Build_it function just for testing out each module
 // during development.
 module build_it() {

@@ -1,23 +1,106 @@
+/* 
+ * Project Name: Creepy Robot Head - Middle Deck
+ * Author: Kamikaze Joe
+ * 
+ * Description:
+ * 
+ * Middle plate to mount eye-servos and Raspberry Pi.
+ * Slits cut out along plate for additional attachments.
+ * 
+ */
+
+/* *** TODO LIST ***
+ * 
+ * Tabs to spaces
+ * 
+ */ 
+
+/* ***** Cheats *****
+
+cube([x,y,z]);
+translate([x,y,z]);
+rotate([x_deg,y_deg,z_deg]);
+cylinder(h=x,d=y);
+
+translate([0,0,0])
+    rotate([0,0,0])
+        function();
+
+vector = [ // aka: A matrix or array.
+[0, 0, 0],          // vector[0][0,1,2]
+[0, 0, 0],     		// vector[1]
+[0, 0, 0],			// vector[2]
+[0, 0, 0]      		// vector[3]
+];
+        
+
+ */
+
+// *** INCLUDE/USE LIBRARIES *** //
+use <shapes.scad>;
+use <fillets.scad>;
+use <kamikaze_shapes.scad>;
+
+// *** VARIABLES *** //
+standard_fn = 20;
 
 
+plate_length = 150;
+plate_width = 150;
+
+// Plate is designed to be laser-cut
+// Depth figure is only for design.
+plate_depth = 5;
+
+/*
+
+Mounting Hole Diagram
+
+|------------|
+|1      2    |
+|            |
+|0      3    |
+|------------|
+
+*/
+
+pi_screw_hole_vector = [
+[3.5, 3.5, 0],          // Hole 0
+[3.5, 3.5 + 49, 0],     // Hole 1
+[3.5 + 56.5, 3.5 + 49, 0],// Hole 2
+[3.5 + 56.5, 3.5, 0]      // Hole 3
+];
+
+plate_screw_diam = 3;
+
+pi_screw_diam = 2.75;
+
+pi_dimension = [85.6,56,21];
+
+//raspi_loc = [55.4,45,0];
+raspi_loc = [ plate_length - pi_dimension[0],
+              ( plate_width - pi_dimension[1] ) / 2,
+              0 ];
+
+// *** MODULES AND FUNCTIONS *** //
 // Mock-up of Raspberry Pi Dimensions
 module raspi() {
     difference() {
         color("lightblue")
-            cube([85.6,56,21]);
+            cube(pi_dimension);
 
 // mounting holes are 58mm x 49mm, 2.75 diameter
-        translate([3.5,3.5,0])
-            cylinder(h=22, d=2.75);
+        translate(pi_screw_hole_vector[0])
+            cylinder( h=pi_dimension[2], d=pi_screw_diam);
 
-        translate([3.5,52.5,0])
-            cylinder(h=22, d=2.75);
+        translate(pi_screw_hole_vector[1])
+            cylinder( h=pi_dimension[2], d=pi_screw_diam);
 
-        translate([61.5,52.5,0])
-            cylinder(h=22, d=2.75);
+        translate(pi_screw_hole_vector[2])
+            cylinder( h=pi_dimension[2], d=pi_screw_diam);
 
-        translate([61.5,3.5,0])
-            cylinder(h=22, d=2.75);
+        translate(pi_screw_hole_vector[3])
+            cylinder( h=pi_dimension[2], d=pi_screw_diam);
     }
 }
 
@@ -25,17 +108,17 @@ module raspi() {
 // Screw holes to mount Raspberry Pi.
 module screw_holes() {
 
-    translate([3.5,3.5,0])
-        cylinder(h=22, d=2.75, $fn=20);
+    translate(pi_screw_hole_vector[0])
+        cylinder( h=plate_depth, d=pi_screw_diam, $fn=standard_fn);
 
-    translate([3.5,52.5,0])
-        cylinder(h=22, d=2.75, $fn=20);
+    translate(pi_screw_hole_vector[1])
+        cylinder( h=plate_depth, d=pi_screw_diam, $fn=standard_fn);
 
-    translate([61.5,52.5,0])
-        cylinder(h=22, d=2.75, $fn=20);
+    translate(pi_screw_hole_vector[2])
+        cylinder( h=plate_depth, d=pi_screw_diam, $fn=standard_fn);
 
-    translate([61.5,3.5,0])
-        cylinder(h=22, d=2.75, $fn=20);
+    translate(pi_screw_hole_vector[3])
+        cylinder( h=plate_depth, d=pi_screw_diam, $fn=standard_fn);
 }
 
 
@@ -43,24 +126,33 @@ module screw_holes() {
 // Mounting bracket for Raspberry Pi
 module raspi_mount() {
 
-
+/* // No idea what the point of this was.
     translate([64.4,47,0])
         difference() {
-            cube([85.6,56,5]);
+            cube([pi_dimension[0],pi_dimension[1],plate_depth]);
 
         translate([6.2,6.2,-3])
             cube([73.2,43.6,10]);
         }
+*/
+bracket_width = pi_screw_hole_vector[0][0] * 2;
 
+bracket_outer_dim = [ pi_dimension[0],
+                      pi_dimension[1],
+                      plate_depth ];
 
-
-// Bracket
-        translate([55.4,45,0])
+bracket_inner_dim = [ pi_dimension[0] - (bracket_width * 2),
+                      pi_dimension[1] - (bracket_width * 2),
+                      plate_depth ];
+    
+    translate(raspi_loc)
         difference() {
-            cube([89.6,60,5]);
-
-        translate([6.2,8.2,-3])
-            cube([73.2,43.6,10]);
+            
+            cube(bracket_outer_dim);
+            
+            translate([bracket_width, bracket_width, 0])
+            cube(bracket_inner_dim);
+            
         }
 }
 
@@ -69,9 +161,40 @@ module raspi_mount() {
 
 // Basic flat base plate shape.
 module m_base_plate() {
-    linear_extrude(height = 5, center = false, convexity = 10, twist = 0)
+    
+    x = plate_length;
+    y = plate_width;
+
+/*  Original points.
+ *  Angles were pretty arbitrary.
+
+    plate_points = [
+                    [  10,   0 ],
+                    [   0,  20 ],
+                    [   0, 130 ],
+                    [  10, 150 ],
+                    [ 130, 150 ],
+                    [ 150, 130 ],
+                    [ 150,  20 ],
+                    [ 130,   0 ]
+                   ];    
+*/
+
+    plate_points = [
+                    [ x * .067,         0 ],
+                    [        0,  y * .137 ],
+                    [        0,  y * .867 ],
+                    [ x * .067,         y ],
+                    [ x * .867,         y ],
+                    [        x,  y * .867 ],
+                    [        x,  y * .137 ],
+                    [ x * .867,         0 ]
+                   ];
+    
+    linear_extrude(height = plate_depth, center = false, convexity = 10, twist = 0)
         polygon(
-            points=[ [10,0],[0,20],[0,130],[10,150],[130,150],[150,130],[150,20],[130,0] ],
+            //points=[ [10,0],[0,20],[0,130],[10,150],[130,150],[150,130],[150,20],[130,0] ],
+            points=plate_points,
             paths=[ [0,1,2,3,4,5,6,7,8] ]
         );
 }
@@ -101,16 +224,16 @@ module servo_cavity() {
 // Server mounting screw holes.
 module servo_screws() {
     translate([ 5-2.2, 46, -3])
-        cylinder(h=10, d=2, $fn=20);
+        cylinder(h=10, d=2, $fn=standard_fn);
 
     translate([ 5 + 24.4 + 2.2 ,46,-3])
-        cylinder(h=10, d=2, $fn=20);
+        cylinder(h=10, d=2, $fn=standard_fn);
 
     translate([ 5-2.2, 104, -3])
-        cylinder(h=10, d=2, $fn=20);
+        cylinder(h=10, d=2, $fn=standard_fn);
 
     translate([ 5 + 24.4 + 2.2, 104, -3])
-        cylinder(h=10, d=2, $fn=20);
+        cylinder(h=10, d=2, $fn=standard_fn);
 }
 
 // Screw mounting slot
@@ -118,23 +241,28 @@ module m_cut_slot() {
     //translate([5,5,-3])
       //  rotate([0,0,0])
             hull() {
-                cylinder(h=10, d=3, $fn=20);
+                cylinder(h=plate_depth, d=plate_screw_diam, $fn=standard_fn);
 
-                translate([0,60,0])
-                    cylinder(h=100, d=3, $fn=20);
+                translate([0, (plate_width / 2) - (plate_width * .10), 0])
+                    cylinder(h=plate_depth, d=plate_screw_diam, $fn=standard_fn);
                 }
 }
 
-module m_slot_grid() { // Woo-hoo!  The for-loop worked!
-    for ( i = [15 : 10 : 130] )
+module m_slot_grid() {
+    
+    grid_start = plate_width * .067 + plate_screw_diam;
+    grid_step = 10; // fix me.
+    grid_end = plate_width * .867;
+    
+    for ( i = [ grid_start : grid_step : grid_end] )
     {
-        translate([i, 5, -3])
+        translate([i, plate_screw_diam * 2, 0])
             m_cut_slot();
     }
 
-        for ( i = [15 : 10 : 130] )
+        for ( i = [grid_start : grid_step : grid_end] )
     {
-        translate([i, 85, -3])
+        translate([i, (plate_width / 2) + (plate_width * .10) - (plate_screw_diam * 2), 0])
             m_cut_slot();
     }
 }
@@ -153,35 +281,35 @@ module m_grid_plate() {
 }
 
 // Build the grid plate with mounting holes.
-module build_with_mount_holes() {
+module middle_deck_plate() {
+    
     difference() {
         m_grid_plate();
         servo_cavity();
         servo_screws();
-        translate([58.4,47,-5])
+        //translate([58.4,47,0])
+        translate(raspi_loc)
             screw_holes();
     }
 }
 
 
 
-// Mount point for Camera Bracket
-module camera_mount_point() {
-
-    translate([0,62.5,0])
-        cube([25,25,5]);
-}
-
-module build_all() {
-//camera_mount_point();
-//build_with_mount_holes();
-}
-
-//projection() translate([0,0,100]) build_all();
-build_all();
-
-/*
-translate([58.4,47,5])
+// Build_it function just for testing out each module
+// during development.
+module build_it() {
+        
+    middle_deck_plate();
+    
+    /*
+    translate([58.4,47,5])
     rotate([0,0,0])
         raspi();
-*/
+    */
+
+}
+
+// *** MAIN ***  //
+//projection() translate([0,0,100]) build_it();
+build_it();
+

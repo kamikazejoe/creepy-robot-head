@@ -426,14 +426,22 @@ module upper_jaw() {
 
   servo_rec_loc = [servo_rec_loc_x, servo_rec_loc_y, servo_rec_loc_z];
 
+  cble_co_diam = servo_side[1] + print_gap;
+  cble_co_depth = servo_loc[0] + servo_recess[1];
+  cble_co_height = servo_depth;
 
 
-    //translate(cble_co_loc)
-        //rotate([0,-90,0])
-            //cable_path_cutout( cble_co_depth, cble_co_diam, cble_co_height );
+  cble_co_loc_x = servo_loc[0] - (cble_co_diam / 2) + print_gap;
+  cble_co_loc_y = servo_loc[1] - servo_side[0] - servo_side[1] - (cble_co_diam / 2);
+  cble_co_loc_z = screw_length + (servo_depth /2);
+
+  cble_co_loc = [ cble_co_loc_x, cble_co_loc_y, cble_co_loc_z ];
 
   wh = screw_length + ((servo_depth - rect_dim[1]) / 2);
   wb = rect_dim[0];
+
+
+
 
   rotate([0,0,90])
     partial_rotate_extrude(180, jaw_radius)
@@ -445,7 +453,8 @@ module upper_jaw() {
           paths=[ [0,1,2] ]
         );
 
-
+          
+          
   difference() {
 
     upper_jaw_mount_plate();
@@ -459,7 +468,11 @@ module upper_jaw() {
         rotate([90,0,0])
             servo_recess_cutout();
 
-
+    translate(cble_co_loc)
+        rotate([0,-90,0])
+          cable_path_cutout( cble_co_depth, cble_co_diam, cble_co_height );
+          
+          
 
     // Screw points
     translate(screw_rec_loc[0])

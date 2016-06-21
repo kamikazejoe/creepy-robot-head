@@ -23,7 +23,7 @@ use <kamikaze_shapes.scad>;
 use <partial_rotate_extrude.scad>;
 
 // Robot Head Libraries
-use <jaw.scad>;
+include <jaw.scad>;
 
 
 
