@@ -40,14 +40,12 @@ fillet_linear_o(l, fillet_r, fillet_angle=90, fillet_fn=0, add=0.02)
  */
 
 // *** INCLUDE/USE LIBRARIES *** //
-//include <shapes.scad>;
 include <fillets.scad>;
 include <MG90S_servos.scad>;
 use <kamikaze_shapes.scad>;
 
 // Same funcitonality will be built into OpenSCAD 2016.XX.
 use <partial_rotate_extrude.scad>;
-
 
 
 
@@ -125,17 +123,16 @@ standard_fn = 100;
 // *** MODULES AND FUNCTIONS *** //
 
 // Basic shape created for the tooth.
-//module tooth(pos_vector, tooth_dim, mod_fn=$fn)
 module tooth(tooth_dim, mod_fn=$fn) {
 
-      minkowski() {
+  minkowski() {
 
-        cube( [ tooth_dim[0] - ( 2 * tooth_dim[3] ),
-                tooth_dim[1] - ( 2 * tooth_dim[3] ),
-                tooth_dim[2] - ( 2 * tooth_dim[3] )] );
+    cube( [ tooth_dim[0] - ( 2 * tooth_dim[3] ),
+            tooth_dim[1] - ( 2 * tooth_dim[3] ),
+            tooth_dim[2] - ( 2 * tooth_dim[3] )] );
 
-        sphere( tooth_dim[3], $fn );
-      }
+    sphere( tooth_dim[3], $fn );
+  }
 }
 
 
@@ -184,9 +181,9 @@ module gum_line(jaw_radius, rect_dim) {
 
 module half_jaw() {
 
-    gum_line(jaw_radius, rect_dim);
+  gum_line(jaw_radius, rect_dim);
 
-    teeth();
+  teeth();
 
 }
 
@@ -243,8 +240,8 @@ module lower_hinge(x, y, z, x_loc, y_loc) {
        cube([x,y, z - (y / 2) ]);
 
    translate([x_loc + (x / 2), (y_loc + y), z - (y / 2) ])
-     rotate([90,0,0])
-       cylinder(h=y,d=x);
+    rotate([90,0,0])
+      cylinder(h=y,d=x);
 
 }
 
@@ -261,8 +258,9 @@ module left_hindge() {
   x_loc = x;
   y_loc = 0 - jaw_dimension[1] + ( tooth_dim[1] * 1.25 );
 
-  lower_hinge(x, y, z, x_loc, y_loc);
 
+
+  lower_hinge(x, y, z, x_loc, y_loc);
   left_hinge_fillets();
 
 }
@@ -280,9 +278,11 @@ module right_hindge() {
   x_loc = x;
   y_loc = jaw_dimension[1] - (( tooth_dim[1] * 1.25 ) * 2 );
 
-  lower_hinge(x, y, z, x_loc, y_loc);
 
+
+  lower_hinge(x, y, z, x_loc, y_loc);
   right_hinge_fillets();
+
 }
 
 
@@ -291,7 +291,8 @@ module right_hindge() {
 module upper_hinge_cutout(x, y, z, x_loc, y_loc) {
 
   translate([x_loc,y_loc,0]) // 40,129,-1
-     cube([x,y,z]);
+    cube([x,y,z]);
+
 }
 
 
@@ -334,6 +335,7 @@ module upper_jaw_mount_plate() {
 
     translate([0, 0 - jaw_radius, 0])
       cube([jaw_radius, jaw_radius * 2, screw_length]);
+
   }
 
   translate([0, 0 - (jaw_radius - rect_dim[0]) + (print_gap / 2), 0])
@@ -385,9 +387,9 @@ module upper_jaw_mount_plate() {
 
 module bottom_jaw() {
 
-   half_jaw();
-   left_hindge();
-   right_hindge();
+  half_jaw();
+  left_hindge();
+  right_hindge();
 
 }
 
@@ -442,7 +444,6 @@ module upper_jaw() {
 
 
 
-
   rotate([0,0,90])
     partial_rotate_extrude(180, jaw_radius)
         polygon(
@@ -453,8 +454,8 @@ module upper_jaw() {
           paths=[ [0,1,2] ]
         );
 
-          
-          
+
+
   difference() {
 
     upper_jaw_mount_plate();
@@ -471,8 +472,8 @@ module upper_jaw() {
     translate(cble_co_loc)
         rotate([0,-90,0])
           cable_path_cutout( cble_co_depth, cble_co_diam, cble_co_height );
-          
-          
+
+
 
     // Screw points
     translate(screw_rec_loc[0])

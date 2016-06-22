@@ -11,7 +11,6 @@
 
 
 // *** INCLUDE/USE LIBRARIES *** //
-//include <shapes.scad>;
 include <fillets.scad>;
 use <kamikaze_shapes.scad>;
 

@@ -11,32 +11,9 @@
  *
  */
 
-/* *** TODO LIST ***
- *
- * Tab to spaces
- *
- */
-
-/* ***** Cheats *****
-
-translate([0,0,0])
-    rotate([0,0,0])
-        function();
-
-vector = [ // aka: A matrix or array.
-[0, 0, 0],          // vector[0][0,1,2]
-[0, 0, 0],        // vector[1]
-[0, 0, 0],      // vector[2]
-[0, 0, 0]         // vector[3]
-];
-
-
- */
 
 // *** INCLUDE/USE LIBRARIES *** //
-//include <shapes.scad>;
 include <fillets.scad>;
-//include <joesmodules.scad>;
 
 //Other Robot Head Parts
 include <jaw.scad>;

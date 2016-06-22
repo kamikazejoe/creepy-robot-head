@@ -38,9 +38,7 @@ vector = [ // aka: A matrix or array.
  */
 
 // *** INCLUDE/USE LIBRARIES *** //
-//use <shapes.scad>;
 use <fillets.scad>;
-//use <kamikaze_shapes.scad>;
 include <nasal_camera_mount.scad>;
 include <jaw.scad>;
 include <neck.scad>;
@@ -103,13 +101,6 @@ module jaw_mount_screw_holes() {
   translate(screw_rec_loc[1])
     cylinder( h=screw_length, d=screw_diam );
 
-/*
-  for ( i = [5 : hole_gap : bone_length] ) {
-    translate([i, upper_width / 2, 0])
-        cylinder( h=screw_length, d=screw_diam );
-  }
-*/
-
 }
 
 
@@ -127,15 +118,6 @@ module neck_mount_screw_holes() {
   add_block_length = [ y_axis_radius + ( servo_overhang * 3 ),
                        2 * y_axis_radius,
                        y_axis_depth ];
-/*
-  mount_screw_loc0 = [ 0 - add_block_length[0],
-                       0 - (y_axis_radius / 2),
-                       servo_cavity[2] ];
-
-  mount_screw_loc1 = [ 0 - add_block_length[0],
-                       0 - (y_axis_radius / 2),
-                       servo_dimension[1] - servo_cavity[2] ];
-*/
 
   mount_screw_loc0 = [ bone_length - (servo_dimension[1] - servo_cavity[2]),
                        ((lower_width / 2) - lower_offset) - (y_axis_radius / 2),
@@ -206,8 +188,6 @@ module cam_screw_holes() {
 }
 
 module nasal_bone() {
-
-
 
   difference() {
 

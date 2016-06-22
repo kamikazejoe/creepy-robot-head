@@ -37,7 +37,6 @@ vector = [ // aka: A matrix or array.
  */
 
 // *** INCLUDE/USE LIBRARIES *** //
-use <shapes.scad>;
 use <fillets.scad>;
 use <kamikaze_shapes.scad>;
 
@@ -64,7 +63,7 @@ screw_diam = 2 + print_gap;
 
 module picam_base_plate(plate_depth) {
 
-   cube([picam_xy[0],picam_xy[1],plate_depth]);
+  cube([picam_xy[0],picam_xy[1],plate_depth]);
 
 }
 
@@ -72,17 +71,17 @@ module picam_base_plate(plate_depth) {
 
 module picam_screw_holes(plate_depth, screw_diam=screw_diam) {
 
-   translate(picam_screw_hole_vector[0])
-      cylinder(h=plate_depth, d=screw_diam, $fn=20);
+  translate(picam_screw_hole_vector[0])
+    cylinder(h=plate_depth, d=screw_diam, $fn=20);
 
-   translate(picam_screw_hole_vector[1])
-      cylinder(h=plate_depth, d=screw_diam, $fn=20);
+  translate(picam_screw_hole_vector[1])
+    cylinder(h=plate_depth, d=screw_diam, $fn=20);
 
-   translate(picam_screw_hole_vector[2])
-      cylinder(h=plate_depth, d=screw_diam, $fn=20);
+  translate(picam_screw_hole_vector[2])
+    cylinder(h=plate_depth, d=screw_diam, $fn=20);
 
-   translate(picam_screw_hole_vector[3])
-      cylinder(h=plate_depth, d=screw_diam, $fn=20);
+  translate(picam_screw_hole_vector[3])
+    cylinder(h=plate_depth, d=screw_diam, $fn=20);
 
 }
 
@@ -90,13 +89,13 @@ module picam_screw_holes(plate_depth, screw_diam=screw_diam) {
 
 module picam_lense_hole(plate_depth) {
 
-   lense_size = 8 + print_gap;
+  lense_size = 8 + print_gap;
 
-   // Complicated maths to allow lense_size to adjust and keep hole centered.
-   translate([ 24 - (5.5 - ( (lense_size - 8) / 2 )) - lense_size,
-               (8.5 - ((lense_size - 8) / 2)),
-               0])
-      cube([ lense_size, lense_size, plate_depth ]);
+  // Complicated maths to allow lense_size to adjust and keep hole centered.
+  translate([ 24 - (5.5 - ( (lense_size - 8) / 2 )) - lense_size,
+              (8.5 - ((lense_size - 8) / 2)),
+              0])
+    cube([ lense_size, lense_size, plate_depth ]);
 
 }
 
@@ -104,15 +103,16 @@ module picam_lense_hole(plate_depth) {
 
 module picam_mount_plate(plate_depth) {
 
-   difference() {
+  difference() {
 
-      picam_base_plate(plate_depth);
+    picam_base_plate(plate_depth);
 
-      picam_screw_holes(plate_depth);
+    picam_screw_holes(plate_depth);
 
-      picam_lense_hole(plate_depth);
+    picam_lense_hole(plate_depth);
 
-   }
+  }
+
 }
 
 // Build_it function just for testing out each module

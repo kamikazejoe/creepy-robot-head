@@ -8,15 +8,8 @@
  * Simply calls the jaw library and calls for the upper jaw.
  */
 
-/* *** TODO LIST ***
- *
- * Tab to spaces
- *
- */
-
 // *** INCLUDE/USE LIBRARIES *** //
-//include <shapes.scad>;
-//include <fillets.scad>;
+include <fillets.scad>;
 use <kamikaze_shapes.scad>;
 
 // Same funcitonality will be built into OpenSCAD 2016.XX.
@@ -29,8 +22,6 @@ include <jaw.scad>;
 
 
 // *** VARIABLES *** //
-
-
 /*
  * Directions:
  *
@@ -67,6 +58,8 @@ num_of_teeth = 14;
 standard_fn = 20;
 
 
+
+// *** MODULES AND FUNCTIONS *** //
 module build_it() {
 
   upper_jaw();
