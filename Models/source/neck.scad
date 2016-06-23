@@ -327,6 +327,50 @@ module x_collar_ring() {
 
 
 
+module mount_base_plate() {
+
+  ring_height = screw_head_diameter;
+
+  ring_radius = x_neck_radius + screw_diam + print_gap;
+
+  col_mnt_loc_x = 0;
+  col_mnt_loc_y = 0 - x_neck_radius - (recess_diam / 2) + 1;
+  col_mnt_loc_z = 0;
+
+  col_mnt_loc = [ col_mnt_loc_x, col_mnt_loc_y, col_mnt_loc_z ];
+
+  difference() {
+
+    union() {
+
+      cylinder( h=ring_height, r=ring_radius );
+
+      // Collar mount points
+      translate(col_mnt_loc)
+        x_collar_mount(ring_height, recess_diam);
+
+      // Collar mount points
+      mirror([0,1,0])
+        translate(col_mnt_loc)
+          x_collar_mount(ring_height, recess_diam);
+    }
+
+    translate(col_mnt_loc)
+      cylinder( h=ring_height, d=screw_diam );
+
+    mirror([0,1,0])
+      translate(col_mnt_loc)
+        cylinder( h=ring_height, d=screw_diam );
+
+  }
+
+
+
+
+}
+
+
+
 module x_collar_mount( height, diam ) {
 
   //height = x_neck_height;
@@ -725,6 +769,7 @@ module build_it() {
   //y_axis_pivot();
   //translate([0- (38 / 2), -25, 40 + 6]) rotate([0,90,0]) y_servo_block_inverse();
   //translate([0- (38 * .75), -25, 40]) rotate([0,90,0]) y_axis_pivot();
+  mount_base_plate();
 
 }
 

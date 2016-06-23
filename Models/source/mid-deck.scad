@@ -1,19 +1,19 @@
-/* 
+/*
  * Project Name: Creepy Robot Head - Middle Deck
  * Author: Kamikaze Joe
- * 
+ *
  * Description:
- * 
+ *
  * Middle plate to mount eye-servos and Raspberry Pi.
  * Slits cut out along plate for additional attachments.
- * 
+ *
  */
 
 /* *** TODO LIST ***
- * 
- * Tabs to spaces
- * 
- */ 
+ *
+ *
+ *
+ */
 
 /* ***** Cheats *****
 
@@ -28,11 +28,11 @@ translate([0,0,0])
 
 vector = [ // aka: A matrix or array.
 [0, 0, 0],          // vector[0][0,1,2]
-[0, 0, 0],     		// vector[1]
-[0, 0, 0],			// vector[2]
-[0, 0, 0]      		// vector[3]
+[0, 0, 0],        // vector[1]
+[0, 0, 0],      // vector[2]
+[0, 0, 0]         // vector[3]
 ];
-        
+
 
  */
 
@@ -40,6 +40,7 @@ vector = [ // aka: A matrix or array.
 use <shapes.scad>;
 use <fillets.scad>;
 use <kamikaze_shapes.scad>;
+include <ES08AII_servos.scad>;
 
 // *** VARIABLES *** //
 standard_fn = 20;
@@ -81,6 +82,8 @@ pi_dimension = [85.6,56,21];
 raspi_loc = [ plate_length - pi_dimension[0],
               ( plate_width - pi_dimension[1] ) / 2,
               0 ];
+
+print_gap = 1;
 
 // *** MODULES AND FUNCTIONS *** //
 // Mock-up of Raspberry Pi Dimensions
@@ -144,15 +147,15 @@ bracket_outer_dim = [ pi_dimension[0],
 bracket_inner_dim = [ pi_dimension[0] - (bracket_width * 2),
                       pi_dimension[1] - (bracket_width * 2),
                       plate_depth ];
-    
+
     translate(raspi_loc)
         difference() {
-            
+
             cube(bracket_outer_dim);
-            
+
             translate([bracket_width, bracket_width, 0])
             cube(bracket_inner_dim);
-            
+
         }
 }
 
@@ -161,7 +164,7 @@ bracket_inner_dim = [ pi_dimension[0] - (bracket_width * 2),
 
 // Basic flat base plate shape.
 module m_base_plate() {
-    
+
     x = plate_length;
     y = plate_width;
 
@@ -177,7 +180,7 @@ module m_base_plate() {
                     [ 150, 130 ],
                     [ 150,  20 ],
                     [ 130,   0 ]
-                   ];    
+                   ];
 */
 
     plate_points = [
@@ -190,7 +193,7 @@ module m_base_plate() {
                     [        x,  y * .137 ],
                     [ x * .867,         0 ]
                    ];
-    
+
     linear_extrude(height = plate_depth, center = false, convexity = 10, twist = 0)
         polygon(
             //points=[ [10,0],[0,20],[0,130],[10,150],[130,150],[150,130],[150,20],[130,0] ],
@@ -204,10 +207,10 @@ module m_base_plate() {
 // Mounting plate for servos.
 module servo_plate() {
     translate([0,35,0])
-        cube([40,23,5]);
+        cube([40,23,plate_depth]);
 
     translate([0,93,0])
-        cube([40,23,5]);
+        cube([40,23,plate_depth]);
 }
 
 
@@ -249,11 +252,11 @@ module m_cut_slot() {
 }
 
 module m_slot_grid() {
-    
+
     grid_start = plate_width * .067 + plate_screw_diam;
     grid_step = 10; // fix me.
     grid_end = plate_width * .867;
-    
+
     for ( i = [ grid_start : grid_step : grid_end] )
     {
         translate([i, plate_screw_diam * 2, 0])
@@ -282,7 +285,7 @@ module m_grid_plate() {
 
 // Build the grid plate with mounting holes.
 module middle_deck_plate() {
-    
+
     difference() {
         m_grid_plate();
         servo_cavity();
@@ -298,9 +301,9 @@ module middle_deck_plate() {
 // Build_it function just for testing out each module
 // during development.
 module build_it() {
-        
+
     middle_deck_plate();
-    
+
     /*
     translate([58.4,47,5])
     rotate([0,0,0])

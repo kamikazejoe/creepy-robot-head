@@ -236,13 +236,22 @@ module left_hinge_fillets() {
 
 module lower_hinge(x, y, z, x_loc, y_loc) {
 
-   translate([x_loc, y_loc,0])
-       cube([x,y, z - (y / 2) ]);
+  difference() {
 
-   translate([x_loc + (x / 2), (y_loc + y), z - (y / 2) ])
-    rotate([90,0,0])
-      cylinder(h=y,d=x);
+    union() {
 
+      translate([x_loc, y_loc,0])
+        cube([x,y, z - (y / 2) ]);
+
+      translate([x_loc + (x / 2), (y_loc + y), z - (y / 2) ])
+        rotate([90,0,0])
+          cylinder(h=y,d=x);
+    }
+
+    translate([x_loc + (x / 2), (y_loc + y), z - (y / 2) ])
+      rotate([90,0,0])
+        cylinder(h=y,d=screw_diam);
+  }
 }
 
 
@@ -293,6 +302,11 @@ module upper_hinge_cutout(x, y, z, x_loc, y_loc) {
   translate([x_loc,y_loc,0]) // 40,129,-1
     cube([x,y,z]);
 
+  // Screw hole
+  translate([ x_loc + x/2, y_loc, z/2 ])
+    rotate([90,0,0])
+      cylinder( h=rect_dim[0], d=screw_diam );
+
 }
 
 
@@ -314,14 +328,8 @@ module left_upper_hindge_cutout() {
 
 module right_upper_hindge_cutout() {
 
-  x = (jaw_dimension[0] - jaw_dimension[1]) / 2;
-  y = print_gap;
-  z = (jaw_dimension[0] - jaw_dimension[1]) / 2;
-
-  x_loc = x;
-  y_loc = jaw_dimension[1] - ( tooth_dim[1] * 1.25 );
-
-  upper_hinge_cutout(x, y, z, x_loc, y_loc);
+  mirror([0,1,0])
+    left_upper_hindge_cutout();
 
 }
 
@@ -499,6 +507,7 @@ module upper_jaw() {
 
       left_upper_hindge_cutout();
       right_upper_hindge_cutout();
+
     }
 
 }
