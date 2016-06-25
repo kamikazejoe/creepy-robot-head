@@ -1,0 +1,28 @@
+{
+  "name": "joes-creepy-robot",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">6.2.2"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- --reporter spec --compilers coffee:coffee-script/register --require coffee-coverage/register-istanbul --recursive test/",
+    "coverage": "node_modules/.bin/istanbul check-coverage --statements 90 --functions 90 --branches 90 --lines 90",
+    "lint-coffee": "node_modules/.bin/coffeelint -f coffeelint.json src mocks test",
+    "lint-js": "node_modules/.bin/eslint -c eslint.json src mocks test",
+    "lint-js-fix": "node_modules/.bin/eslint -c eslint.json --fix src mocks test",
+    "lint": "npm run lint-coffee && npm run lint-js",
+    "check": "npm run lint && npm run test"
+  },
+  "pre-commit": [
+    "check"
+  ],
+  "author": "Robert Ward <robert@rtward.com>",
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "lodash": "^4.13.1",
+    "opencv": "^5.0.0",
+    "printf": "^0.2.3"
+  },
+  "devDependencies": {}
+}
