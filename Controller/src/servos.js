@@ -39,23 +39,25 @@ const servoDefs = [
 	},
 	{
 		name: 'jaw',
-		servos: [7],
-		min: 150,
+		servos: [6],
+		invert: [6],
+		min: 475,
 		max: 600,
 		position: 50,
 		moveTime: 500,
 	},
 	{
 		name: 'neckTurn',
-		servos: [4],
-		min: 150,
-		max: 600,
+		servos: [8],
+		min: 285,
+		max: 465,
 		position: 50,
 		moveTime: 2000,
 	},
 	{
 		name: 'neckTilt',
-		servos: [5],
+		servos: [10],
+		invert: [10],
 		min: 150,
 		max: 600,
 		position: 50,
@@ -70,7 +72,7 @@ module.exports = () => new Promise((resolve, reject) => {
 
 	servoDefs.forEach(def => {
 		servoCtrl[def.name] = (pos) => {
-			if (pos) {
+			if (_.isNumber(pos)) {
 				if (pos < 0 || pos > 100) throw new Error(`invalid position: ${pos}`);
 
 				console.log(`moving servo(s) for ${def.name} to position ${pos}`);

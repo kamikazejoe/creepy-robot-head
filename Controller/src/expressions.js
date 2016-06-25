@@ -29,6 +29,7 @@ module.exports = expressions = {
 		])
 		.then(() => servoCtrl.eyes(0))
 		.then(() => servoCtrl.eyes(100))
+		.then(() => servoCtrl.eyes(0))
 		.then(() => servoCtrl.eyes(50));
 	},
 
