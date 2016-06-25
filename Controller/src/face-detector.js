@@ -65,7 +65,7 @@ module.exports = class FaceDetector extends EventEmitter {
 	constructor() {
 		super();
 
-		this.camera = new cv.VideoCapture(0);
+		this.camera = new cv.VideoCapture(1);
 		this.window = new cv.NamedWindow('Video', 0);
 
 		this.imgEmitter = runCameraThread(this.camera);
