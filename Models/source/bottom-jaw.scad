@@ -63,7 +63,6 @@ num_of_teeth = 14;
 
 module build_it() {
 
-  scale([0.25,0.25,0.25])
     bottom_jaw();
 
 }

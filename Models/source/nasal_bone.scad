@@ -48,7 +48,7 @@ include <neck.scad>;
 upper_width = 40;
 
 picam_screw_diam = 2;
-jaw_screw_diam = 3;
+jaw_screw_diam = 3.5;
 
 // To match mounting plate on upper jaw.
 lower_width = ((jaw_radius - rect_dim[0]) * 2) - print_gap;
@@ -104,7 +104,7 @@ module jaw_mount_screw_holes() {
 }
 
 
-
+/* Re-do to invert neck y-axis
 module neck_mount_screw_holes() {
 
   screw_diam = jaw_screw_diam;
@@ -119,20 +119,66 @@ module neck_mount_screw_holes() {
                        2 * y_axis_radius,
                        y_axis_depth ];
 
-  mount_screw_loc0 = [ bone_length - (servo_dimension[1] - servo_cavity[2]),
-                       ((lower_width / 2) - lower_offset) - (y_axis_radius / 2),
+
+----
+|-0|
+|--|
+
+----
+|--|
+|-1|
+
+----
+|2-|
+|--|
+
+----
+|--|
+|3-|
+
+
+  mount_screw_loc0 = [ bone_length
+                       - (recess_diam * 1.5),
+
+                       ((lower_width / 2)
+                       - lower_offset)
+                       - (servo_dimension[1]
+                       - servo_cavity[2]),
+
                        0];
 
-  mount_screw_loc1 = [ bone_length - servo_cavity[2],
-                       ((lower_width / 2) - lower_offset) - (y_axis_radius / 2),
+  mount_screw_loc1 = [ bone_length
+                       - (recess_diam * 1.5)
+                       - y_axis_radius,
+
+                       ((lower_width / 2)
+                       - lower_offset)
+                       - (servo_dimension[1]
+                       - servo_cavity[2]),
+
+
                        0];
 
-  mount_screw_loc2 = [ bone_length - (servo_dimension[1] - servo_cavity[2]),
-                       ((lower_width / 2) - lower_offset) + (y_axis_radius / 2),
+  mount_screw_loc2 = [ bone_length
+                       - (recess_diam * 1.5),
+
+                       ((lower_width / 2)
+                       - lower_offset)
+                       + (servo_dimension[1]
+                       - servo_cavity[2]),
+
+
                        0];
 
-  mount_screw_loc3 = [ bone_length - servo_cavity[2],
-                       ((lower_width / 2) - lower_offset) + (y_axis_radius / 2),
+  mount_screw_loc3 = [ bone_length
+                       - (recess_diam * 1.5)
+                       - y_axis_radius,
+
+                       ((lower_width / 2)
+                       - lower_offset)
+                       + (servo_dimension[1]
+                       - servo_cavity[2]),
+
                        0];
 
   mount_screw_loc = [ mount_screw_loc0,
@@ -153,7 +199,127 @@ module neck_mount_screw_holes() {
   }
 
 }
+*/
 
+module neck_mount_screw_holes() {
+
+  screw_diam = jaw_screw_diam;
+
+  y_axis_radius = ( servo_overhang * 3 ) // 3 time for thicker structure
+                  + servo_top[0]
+                  + ( servo_top[1] / 2);
+
+  y_axis_depth = servo_dimension[0];
+
+  add_block_length = [ y_axis_radius + ( servo_overhang * 3 ),
+                       2 * y_axis_radius,
+                       y_axis_depth ];
+
+/*
+
+-----
+|-0-|
+|---|
+
+-----
+|---|
+|-1-|
+
+
+*/
+
+// Taken from y_servo_block_inverse in neck.scad for reference
+  /*
+  y_axis_radius = ( servo_overhang * 3 ) // 3 time for thicker structure
+                  + servo_top[0]
+                  + ( servo_top[1] / 2)
+                  + print_gap;
+
+  y_axis_depth = servo_dimension[0];
+
+  inv_block = [ servo_dimension[1],
+                y_axis_radius
+                + ( 2 * screw_head_diameter )
+                + ( 2 * print_gap ),
+                y_axis_depth ];
+
+  screw_rec_loc_x0 = inv_block[0];
+  screw_rec_loc_y0 = recess_diam / 2 + print_gap;
+  screw_rec_loc_z0 = y_axis_depth / 2;
+
+  screw_rec_loc_x1 = inv_block[0];
+  screw_rec_loc_y1 = inv_block[1] - print_gap - ( recess_diam / 2);
+  screw_rec_loc_z1 = y_axis_depth / 2;
+
+
+  screw_rec_loc = [[screw_rec_loc_x0, screw_rec_loc_y0, screw_rec_loc_z0],
+                   [screw_rec_loc_x1, screw_rec_loc_y1, screw_rec_loc_z1]];
+
+*/
+
+/*
+  mount_screw_loc0 = [ bone_length
+                       - (recess_diam * 1.5),
+
+                       ((lower_width / 2)
+                       - lower_offset)
+                       - (servo_dimension[1]
+                       - servo_cavity[2]),
+
+                       0];
+
+  mount_screw_loc1 = [ bone_length
+                       - (recess_diam * 1.5)
+                       - y_axis_radius,
+
+                       ((lower_width / 2)
+                       - lower_offset)
+                       - (servo_dimension[1]
+                       - servo_cavity[2]),
+
+
+                       0];
+*/
+  inv_block = [ servo_dimension[1],
+                y_axis_radius
+                + ( 2 * screw_head_diameter )
+                + ( 2 * print_gap ),
+                y_axis_depth ];
+
+  screw_rec_loc_x0 = bone_length - (recess_diam / 2 + print_gap) - (recess_diam * 1.5);
+  screw_rec_loc_y0 = inv_block[0] / 2;
+  screw_rec_loc_z0 = 0;
+
+  screw_rec_loc_x1 = bone_length - (inv_block[1] - print_gap - ( recess_diam / 2)) - (recess_diam * 1.5);
+  screw_rec_loc_y1 = inv_block[0] / 2;
+  screw_rec_loc_z1 = 0;
+
+
+  mount_screw_loc0 = [ screw_rec_loc_x0,
+                       screw_rec_loc_y0,
+                       screw_rec_loc_z0];
+ 
+  mount_screw_loc1 = [ screw_rec_loc_x1,
+                       screw_rec_loc_y1,
+                       screw_rec_loc_z1]; 
+
+  mount_screw_loc = [ mount_screw_loc0,
+                      mount_screw_loc1];
+  
+ 
+  recess_depth = bone_height;
+
+  for ( i = [ 0 : 1] ) {
+
+    translate(mount_screw_loc[i])
+      rotate([0,0,0])
+        recessed_screw_cutout(recess_depth,
+                              recess_diam,
+                              screw_length,
+                              screw_diam);
+  }
+
+}
 
 // Difficult to gauge proper location until actual assembly.
 // Multiple holes to allow for room of the neck joint.

@@ -421,7 +421,7 @@ module upper_jaw() {
                 0 - (jaw_radius - rect_dim[0])
                 + (print_gap / 2)
                 + servo_recess[2]
-                + servo_cavity[2],
+                + servo_cavity[2] - .1,
 
                 screw_length];
 
@@ -431,7 +431,8 @@ module upper_jaw() {
                     - servo_top[0]
                     - (servo_top[1] / 2);
 
-  servo_rec_loc_y = 0 - (jaw_radius - rect_dim[0]) + (print_gap / 2) + servo_recess[2];
+  servo_rec_loc_y = 0 - (jaw_radius - rect_dim[0]) + (print_gap / 2) + (servo_recess[2]) - .1;
+
   servo_rec_loc_z = screw_length;
 
   servo_rec_loc = [servo_rec_loc_x, servo_rec_loc_y, servo_rec_loc_z];
