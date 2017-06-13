@@ -59,34 +59,34 @@ module build_it() {
 
 
 
-  translate([ servo_dimension[1] / 2, 0 - servo_dimension[1] / 2, 110 ]) {
+  translate([ servo_dimension[1] / 2, 0, 140 ]) { //- servo_dimension[1] / 2, 140 ]) {
 
-    rotate([0,90,90])
+    rotate([0,-90,90])
       y_servo_block_inverse();
 
   }
 
-  translate([ servo_dimension[1] / 2, servo_dimension[1] * .75, 110 ]) {
+  translate([ servo_dimension[1] / 2, servo_dimension[1] * .75, 140 ]) {
 
-    rotate([0,90,90])
+    rotate([0,-90,90])
       y_axis_pivot();
 
   }
 
-  translate([ servo_dimension[1] / 2, 0 - servo_dimension[1], 110 ]) {
+  translate([ servo_dimension[1] / 2, 0 - servo_dimension[1], 140 ]) {
 
-    rotate([0,90,90])
+    rotate([0,-90,90])
       y_axis_pivot();
 
   }
 
 
-    translate([0,0 - servo_dimension[2], 120]) {
+    translate([0, servo_dimension[2] / 2, 120]) {
 
-      rotate([0,90,90])
+      rotate([0,-90,90])
         y_servo_block_A();
 
-      rotate([0,90,90])
+      rotate([0,-90,90])
         y_servo_block_B();
 
   }
