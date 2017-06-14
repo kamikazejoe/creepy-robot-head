@@ -38,6 +38,7 @@ vector = [ // aka: A matrix or array.
 
 // *** INCLUDE/USE LIBRARIES *** //
 include <MG995_servos.scad>;
+include <nasal_camera_mount.scad>;
 
 //use <shapes.scad>;
 use <fillets.scad>;
@@ -905,7 +906,7 @@ module y_servo_block_inverse() {
                   + ( servo_top[1] / 2)
                   + print_gap;
 
-  y_axis_depth = servo_dimension[0];
+  y_axis_depth = servo_dimension[0] + ( servo_side[5] * 2 );
 
   inv_block = [ servo_dimension[1],
                 y_axis_radius
@@ -959,7 +960,7 @@ module y_axis_pivot() {
                   + ( servo_top[1] / 2)
                   + print_gap;
 
-  pivot_blk_x = servo_dimension[0];
+  pivot_blk_x = servo_dimension[0] + ( picam_xy[0] / 2 );
   pivot_blk_y = y_axis_radius
                 + ( 2 * screw_head_diameter )
                 + ( 2 * print_gap );
@@ -982,6 +983,8 @@ module y_axis_pivot() {
 
 
     // Screw holes
+    // Need to be moved to the side.
+    
     translate([pivot_blk_x, recess_diam / 2 + print_gap, pivot_blk_z / 2])
       rotate([0,-90,0])
         cylinder( h=screw_length, d=screw_diam );
@@ -989,7 +992,7 @@ module y_axis_pivot() {
     translate([pivot_blk_x, pivot_blk_y - (recess_diam / 2 + print_gap), pivot_blk_z / 2])
       rotate([0,-90,0])
         cylinder( h=screw_length, d=screw_diam );
-
+    
   }
 }
 

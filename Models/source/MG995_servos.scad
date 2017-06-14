@@ -23,7 +23,7 @@ use <kamikaze_shapes.scad>;
         ~6.75     ~27.25
         [---][-------------]
             6.0
-            ||
+~5.0>       ||  (with Horn)
 ~6.0 >  |------------------|      ---
 ~3.0 >-------------------------    |
         |                  | ^ 7.0 |
@@ -44,8 +44,8 @@ use <kamikaze_shapes.scad>;
 
 */
 
-screw_diameter = 0;
-screw_head_diameter = 0;
+//screw_diameter = 0;
+//screw_head_diameter = 0;
 
 servo_height      = 38;
 servo_width       = 40;
@@ -65,7 +65,8 @@ servo_top = [ 6.75, 6.0, 27.25 ];
 // Cable to Overhange,
 // Overhange width,
 // Overhange to Top.
-servo_side = [ 4.0, 4.0, 20.0, 3.0, 6.0 ];
+// Extra bit with horn attached.
+servo_side = [ 4.0, 4.0, 20.0, 3.0, 6.0, 5.0 ];
 
 print_gap = 2;
 

@@ -42,6 +42,7 @@ use <fillets.scad>;
 include <nasal_camera_mount.scad>;
 include <jaw.scad>;
 include <neck.scad>;
+include <MG995_servos.scad>;
 
 
 // *** VARIABLES *** //
@@ -51,7 +52,8 @@ picam_screw_diam = 2;
 jaw_screw_diam = 3.5;
 
 // To match mounting plate on upper jaw.
-lower_width = ((jaw_radius - rect_dim[0]) * 2) - print_gap;
+// lower_width = ((jaw_radius - rect_dim[0]) * 2) - print_gap;
+lower_width = servo_dimension[0] + ( servo_side[5] * 2 );
 
 bone_height = picam_xy[0];
 bone_length = 150; // Full length of middle plate.
@@ -70,7 +72,7 @@ module nasal_bone_block() {
 
   translate([ 0, 0 - lower_offset ,0])
     cube([ bone_length, lower_width, bone_height / 2 ]);
-
+  
   translate([0,0,bone_height / 2])
     rotate([0,-90,180])
       fillet_linear_i( bone_length, lower_offset, $fn=standard_fn);
