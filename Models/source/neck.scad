@@ -984,7 +984,7 @@ module y_axis_pivot() {
 
     // Screw holes
     // Need to be moved to the side.
-    
+    /* 
     translate([pivot_blk_x, recess_diam / 2 + print_gap, pivot_blk_z / 2])
       rotate([0,-90,0])
         cylinder( h=screw_length, d=screw_diam );
@@ -992,6 +992,21 @@ module y_axis_pivot() {
     translate([pivot_blk_x, pivot_blk_y - (recess_diam / 2 + print_gap), pivot_blk_z / 2])
       rotate([0,-90,0])
         cylinder( h=screw_length, d=screw_diam );
+    */
+
+    translate([pivot_blk_x - (recess_diam / 2) - print_gap, recess_diam / 2 + print_gap, 0])
+      rotate([0,0,0])
+        recessed_screw_cutout(pivot_blk_z - screw_length,
+                              recess_diam,
+                              screw_length,
+                              screw_diam);
+
+    translate([pivot_blk_x - (recess_diam / 2) - print_gap, pivot_blk_y - (recess_diam / 2 + print_gap), 0])
+      rotate([0,0,0])
+        recessed_screw_cutout(pivot_blk_z - screw_length,
+                              recess_diam,
+                              screw_length,
+                              screw_diam);
     
   }
 }
