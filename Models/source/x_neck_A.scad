@@ -15,7 +15,7 @@ include <fillets.scad>;
 use <kamikaze_shapes.scad>;
 
 // Same funcitonality will be built into OpenSCAD 2016.XX.
-use <partial_rotate_extrude.scad>;
+//use <partial_rotate_extrude.scad>;
 
 // Robot Head Libraries
 include <neck.scad>;

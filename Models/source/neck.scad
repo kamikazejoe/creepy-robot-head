@@ -72,6 +72,18 @@ use <kamikaze_shapes.scad>;
 
 */
 
+screw_diameter = 3;
+screw_head_diameter = 6;
+
+screw_diam   = screw_diameter;
+screw_length = screw_diameter + 1;
+recess_diam  = screw_head_diameter + print_gap;
+recess_depth = x_neck_radius - screw_diam - ( recess_diam / 2 );
+
+standard_fn = 100;
+print_gap = 2;
+
+
 x_neck_height = servo_dimension[0];
 
 x_neck_radius =  ( servo_top[1] / 2 )
@@ -86,17 +98,6 @@ x_neck_radius =  ( servo_top[1] / 2 )
                   // + Screw Diameter ( Arbitrary figure for structure )
 
 
-
-screw_diameter = 3;
-screw_head_diameter = 6;
-
-screw_diam   = screw_diameter;
-screw_length = screw_diameter + 1;
-recess_diam  = screw_head_diameter + print_gap;
-recess_depth = x_neck_radius - screw_diam - ( recess_diam / 2 );
-
-standard_fn = 100;
-print_gap = 2;
 
 
 
@@ -153,130 +154,6 @@ module cable_path_cutout( depth, diam, height ) {
 }
 
 
-// Redo to match inverted y-axis neck
-/*
-module x_rotor_disc() {
-
-  disc_diam = 2 * x_neck_radius;
-  disc_height = screw_head_diameter;
-
-  disc_track_loc = x_neck_radius - screw_diam - ( recess_diam / 2 );
-
-  y_axis_radius = ( servo_overhang * 3 ) // 3 time for thicker structure
-                  + servo_top[0]
-                  + ( servo_top[1] / 2)
-                  + print_gap;
-
-  y_inv_blk_width = y_axis_radius + ( 2 * screw_head_diameter ) + ( 2 * print_gap );
-
-  y_pivot_blk_x = servo_dimension[0];
-  y_pivot_blk_y = y_axis_radius
-                + ( 2 * screw_head_diameter )
-                + ( 2 * print_gap );
-  y_pivot_blk_z = servo_dimension[0] / 4;
-
-
-  screw_rec_loc_x0 = 0;
-  screw_rec_loc_y0 = (y_inv_blk_width / 2)
-                      - (recess_diam / 2)
-                      - print_gap;
-  screw_rec_loc_z0 = 0;
-
-  screw_rec_loc_x1 = 0;
-  screw_rec_loc_y1 = 0 - (y_inv_blk_width / 2)
-                     + (recess_diam / 2)
-                     + print_gap;
-  screw_rec_loc_z1 = 0;
-
-  screw_rec_loc_x2 = y_pivot_blk_z * 2.5;
-  screw_rec_loc_y2 = (y_inv_blk_width / 2)
-                      - (recess_diam / 2)
-                      - print_gap;
-  screw_rec_loc_z2 = 0;
-
-  screw_rec_loc_x3 = y_pivot_blk_z * 2.5;
-  screw_rec_loc_y3 = 0 - (y_inv_blk_width / 2)
-                     + (recess_diam / 2)
-                     + print_gap;
-  screw_rec_loc_z3 = 0;
-
-  screw_rec_loc_x4 = 0 - (y_pivot_blk_z * 2.5);
-  screw_rec_loc_y4 = (y_inv_blk_width / 2)
-                      - (recess_diam / 2)
-                      - print_gap;
-  screw_rec_loc_z4 = 0;
-
-  screw_rec_loc_x5 = 0 - (y_pivot_blk_z * 2.5);
-  screw_rec_loc_y5 = 0 - (y_inv_blk_width / 2)
-                     + (recess_diam / 2)
-                     + print_gap;
-  screw_rec_loc_z5 = 0;
-
-
-  screw_rec_loc = [[screw_rec_loc_x0, screw_rec_loc_y0, screw_rec_loc_z0],
-                   [screw_rec_loc_x1, screw_rec_loc_y1, screw_rec_loc_z1],
-                   [screw_rec_loc_x2, screw_rec_loc_y2, screw_rec_loc_z2],
-                   [screw_rec_loc_x3, screw_rec_loc_y3, screw_rec_loc_z3],
-                   [screw_rec_loc_x4, screw_rec_loc_y4, screw_rec_loc_z4],
-                   [screw_rec_loc_x5, screw_rec_loc_y5, screw_rec_loc_z5]];
-
-  difference() {
-
-    cylinder( h=disc_height, d=disc_diam);
-
-    cylinder( h=disc_height, d=screw_head_diameter + print_gap );
-
-    translate([0,0,disc_height + print_gap])
-      rotate_extrude()
-        translate([disc_track_loc,0,0])
-          circle( r=screw_diam + print_gap );
-
-    // Screw points
-    translate(screw_rec_loc[0])
-      rotate([0,0,0])
-        recessed_screw_cutout(recess_depth,
-                              recess_diam,
-                              screw_length,
-                              screw_diam);
-
-    translate(screw_rec_loc[1])
-      rotate([0,0,0])
-        recessed_screw_cutout(recess_depth,
-                              recess_diam,
-                              screw_length,
-                              screw_diam);
-
-    translate(screw_rec_loc[2])
-      rotate([0,0,0])
-        recessed_screw_cutout(recess_depth,
-                              recess_diam,
-                              screw_length,
-                              screw_diam);
-
-    translate(screw_rec_loc[3])
-      rotate([0,0,0])
-        recessed_screw_cutout(recess_depth,
-                              recess_diam,
-                              screw_length,
-                              screw_diam);
-
-    translate(screw_rec_loc[4])
-      rotate([0,0,0])
-        recessed_screw_cutout(recess_depth,
-                              recess_diam,
-                              screw_length,
-                              screw_diam);
-
-    translate(screw_rec_loc[5])
-      rotate([0,0,0])
-        recessed_screw_cutout(recess_depth,
-                              recess_diam,
-                              screw_length,
-                              screw_diam);
-  }
-
-}
-*/
 
 module x_rotor_disc() {
 
@@ -290,75 +167,7 @@ module x_rotor_disc() {
                   + ( servo_top[1] / 2)
                   + print_gap;
 /*
-  y_inv_blk_width = y_axis_radius + ( 2 * screw_head_diameter ) + ( 2 * print_gap );
-
-  y_pivot_blk_x = servo_dimension[0];
-  y_pivot_blk_y = y_axis_radius
-                + ( 2 * screw_head_diameter )
-                + ( 2 * print_gap );
-  y_pivot_blk_z = servo_dimension[0] / 4;
-
-
-  screw_rec_loc_x0 = 0;
-  screw_rec_loc_y0 = (y_inv_blk_width / 2)
-                      - (recess_diam / 2)
-                      - print_gap;
-  screw_rec_loc_z0 = 0;
-
-  screw_rec_loc_x1 = 0;
-  screw_rec_loc_y1 = 0 - (y_inv_blk_width / 2)
-                     + (recess_diam / 2)
-                     + print_gap;
-  screw_rec_loc_z1 = 0;
-
-  screw_rec_loc_x2 = y_pivot_blk_z * 2.5;
-  screw_rec_loc_y2 = (y_inv_blk_width / 2)
-                      - (recess_diam / 2)
-                      - print_gap;
-  screw_rec_loc_z2 = 0;
-
-  screw_rec_loc_x3 = y_pivot_blk_z * 2.5;
-  screw_rec_loc_y3 = 0 - (y_inv_blk_width / 2)
-                     + (recess_diam / 2)
-                     + print_gap;
-  screw_rec_loc_z3 = 0;
-
-  screw_rec_loc_x4 = 0 - (y_pivot_blk_z * 2.5);
-  screw_rec_loc_y4 = (y_inv_blk_width / 2)
-                      - (recess_diam / 2)
-                      - print_gap;
-  screw_rec_loc_z4 = 0;
-
-  screw_rec_loc_x5 = 0 - (y_pivot_blk_z * 2.5);
-  screw_rec_loc_y5 = 0 - (y_inv_blk_width / 2)
-                     + (recess_diam / 2)
-                     + print_gap;
-  screw_rec_loc_z5 = 0;
-
-
-  screw_rec_loc = [[screw_rec_loc_x0, screw_rec_loc_y0, screw_rec_loc_z0],
-                   [screw_rec_loc_x1, screw_rec_loc_y1, screw_rec_loc_z1],
-                   [screw_rec_loc_x2, screw_rec_loc_y2, screw_rec_loc_z2],
-                   [screw_rec_loc_x3, screw_rec_loc_y3, screw_rec_loc_z3],
-                   [screw_rec_loc_x4, screw_rec_loc_y4, screw_rec_loc_z4],
-                   [screw_rec_loc_x5, screw_rec_loc_y5, screw_rec_loc_z5]];
-*/
-
-// Taken from neck_mount_screw_holes in nasal_bone.scad
-/*
-  screw_diam = jaw_screw_diam;
-
-  y_axis_radius = ( servo_overhang * 3 ) // 3 time for thicker structure
-                  + servo_top[0]
-                  + ( servo_top[1] / 2);
-
-  y_axis_depth = servo_dimension[0];
-
-  add_block_length = [ y_axis_radius + ( servo_overhang * 3 ),
-                       2 * y_axis_radius,
-                       y_axis_depth ];
-
-
+ 
 ----
 |-0|
 |--|
@@ -374,56 +183,6 @@ module x_rotor_disc() {
 ----
 |--|
 |3-|
-
-
-  mount_screw_loc0 = [ bone_length
-                       - (recess_diam * 1.5),
-
-                       ((lower_width / 2)
-                       - lower_offset)
-                       - (servo_dimension[1]
-                       - servo_cavity[2]),
-
-                       0];
-
-  mount_screw_loc1 = [ bone_length
-                       - (recess_diam * 1.5)
-                       - y_axis_radius,
-
-                       ((lower_width / 2)
-                       - lower_offset)
-                       - (servo_dimension[1]
-                       - servo_cavity[2]),
-
-
-                       0];
-
-  mount_screw_loc2 = [ bone_length
-                       - (recess_diam * 1.5),
-
-                       ((lower_width / 2)
-                       - lower_offset)
-                       + (servo_dimension[1]
-                       - servo_cavity[2]),
-
-
-                       0];
-
-  mount_screw_loc3 = [ bone_length
-                       - (recess_diam * 1.5)
-                       - y_axis_radius,
-
-                       ((lower_width / 2)
-                       - lower_offset)
-                       + (servo_dimension[1]
-                       - servo_cavity[2]),
-
-                       0];
-
-  mount_screw_loc = [ mount_screw_loc0,
-                      mount_screw_loc1,
-                      mount_screw_loc2,
-                      mount_screw_loc3 ];
 
 */
 
@@ -522,11 +281,13 @@ module x_rotor_disc() {
 
 module x_collar_ring() {
 
-  ring_height = screw_head_diameter * 2;
+  //ring_height = screw_head_diameter * 2;
+  
+  ring_height = x_neck_height + servo_side[5]; 
 
-  cutout_radius = x_neck_radius - screw_diam - ( recess_diam / 2 );
+  cutout_radius = x_neck_radius - screw_diameter - ( recess_diam / 2 );
   groove_radius = x_neck_radius + print_gap;
-  ring_radius = x_neck_radius + screw_diam + print_gap;
+  ring_radius = x_neck_radius + screw_diameter + print_gap;
 
   col_mnt_loc_x = 0;
   col_mnt_loc_y = 0 - x_neck_radius - (recess_diam / 2) + 1;
@@ -551,7 +312,7 @@ module x_collar_ring() {
     }
 
 
-    translate([0,0, ring_height / 2])
+    translate([0,0, screw_length])
       cylinder( h=ring_height, r=groove_radius );
 
     cylinder( h=ring_height, r=cutout_radius );
@@ -576,7 +337,7 @@ module mount_base_plate() {
 
   ring_height = screw_head_diameter;
 
-  ring_radius = x_neck_radius + screw_diam + print_gap;
+  ring_radius = x_neck_radius + screw_diameter + print_gap;
 
   col_mnt_loc_x = 0;
   col_mnt_loc_y = 0 - x_neck_radius - (recess_diam / 2) + 1;
@@ -621,12 +382,12 @@ module x_collar_mount( height, diam ) {
   //height = x_neck_height;
   //diam = recess_diam;
 
-  lfx_loc = 0 - (diam / 2);
-  lfy_loc = diam / 2;
+  lfx_loc = 0 - (diam / 4);
+  lfy_loc = diam / 4;
   lfz_loc = 0;
 
-  rfx_loc = diam / 2;
-  rfy_loc = diam / 2;
+  rfx_loc = diam / 4;
+  rfy_loc = diam / 4;
   rfz_loc = 0;
 
   left_fillet_loc  = [ lfx_loc, lfy_loc, lfz_loc];
@@ -637,8 +398,8 @@ module x_collar_mount( height, diam ) {
 
     union() {
 
-      translate([ 0 - ( diam / 2 ), 0, 0])
-        cube([ diam, diam / 2, height ]);
+      translate([ 0 - ( diam / 4 ), 0, 0])
+        cube([ diam / 2, diam / 4, height ]);
 
       translate([0,0,0])
         rotate([0,0,0])
@@ -648,15 +409,15 @@ module x_collar_mount( height, diam ) {
 
       translate(left_fillet_loc)
         rotate([0,0,180])
-          fillet_linear_i(height, diam / 2 , fillet_fn=standard_fn);
+          fillet_linear_i(height, diam / 4 , fillet_fn=standard_fn);
 
       translate(right_fillet_loc)
         rotate([0,0,-90])
-          fillet_linear_i(height, diam / 2, fillet_fn=standard_fn);
+          fillet_linear_i(height, diam / 4, fillet_fn=standard_fn);
     }
 
     translate([0,0,0])
-      cylinder( h=height, d=screw_diam );
+      cylinder( h=height, d=diam / 4 );
 
   }
 }
@@ -754,7 +515,7 @@ module x_neck_A() {
 
   // Collar mount points
   translate(col_mnt_loc)
-    x_collar_mount(x_neck_height, recess_diam);
+    x_collar_mount(x_neck_height, recess_diam * 2);
 
 }
 
@@ -983,17 +744,6 @@ module y_axis_pivot() {
 
 
     // Screw holes
-    // Need to be moved to the side.
-    /* 
-    translate([pivot_blk_x, recess_diam / 2 + print_gap, pivot_blk_z / 2])
-      rotate([0,-90,0])
-        cylinder( h=screw_length, d=screw_diam );
-
-    translate([pivot_blk_x, pivot_blk_y - (recess_diam / 2 + print_gap), pivot_blk_z / 2])
-      rotate([0,-90,0])
-        cylinder( h=screw_length, d=screw_diam );
-    */
-
     translate([pivot_blk_x - (recess_diam / 2) - print_gap, recess_diam / 2 + print_gap, 0])
       rotate([0,0,0])
         recessed_screw_cutout(pivot_blk_z - screw_length,
@@ -1032,7 +782,7 @@ module build_it() {
   //y_axis_pivot();
   //translate([0- (38 / 2), -25, 40 + 6]) rotate([0,90,0]) y_servo_block_inverse();
   //translate([0- (38 * .75), -25, 40]) rotate([0,90,0]) y_axis_pivot();
-  mount_base_plate();
+  //mount_base_plate();
 
 }
 
