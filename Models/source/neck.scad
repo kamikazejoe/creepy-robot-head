@@ -303,26 +303,28 @@ module x_collar_ring() {
 
       // Collar mount points
       translate(col_mnt_loc)
-        x_collar_mount(ring_height, recess_diam);
+        x_collar_mount(screw_length, recess_diam * 2 );
 
       // Collar mount points
       mirror([0,1,0])
         translate(col_mnt_loc)
-          x_collar_mount(ring_height, recess_diam);
+          x_collar_mount(screw_length, recess_diam * 2 );
     }
-
 
     translate([0,0, screw_length])
       cylinder( h=ring_height, r=groove_radius );
 
     cylinder( h=ring_height, r=cutout_radius );
 
-    translate(col_mnt_loc)
-      cylinder( h=ring_height, d=screw_diam );
+    translate([ 0 - ( recess_diam / 2 ), 0 - ring_radius, screw_length ])
+      cube([ recess_diam, ring_radius * 2, ring_height ]);
 
-    mirror([0,1,0])
-      translate(col_mnt_loc)
-        cylinder( h=ring_height, d=screw_diam );
+    //translate(col_mnt_loc)
+      //cylinder( h=ring_height, d=screw_diam );
+
+    //mirror([0,1,0])
+      //translate(col_mnt_loc)
+        //cylinder( h=ring_height, d=screw_diam );
 
   }
 
@@ -353,20 +355,20 @@ module mount_base_plate() {
 
       // Collar mount points
       translate(col_mnt_loc)
-        x_collar_mount(ring_height, recess_diam);
+        x_collar_mount(ring_height, recess_diam * 2 );
 
       // Collar mount points
       mirror([0,1,0])
         translate(col_mnt_loc)
-          x_collar_mount(ring_height, recess_diam);
+          x_collar_mount(ring_height, recess_diam * 2 );
     }
 
-    translate(col_mnt_loc)
-      cylinder( h=ring_height, d=screw_diam );
+    //translate(col_mnt_loc)
+      //cylinder( h=ring_height, d=screw_diam );
 
-    mirror([0,1,0])
-      translate(col_mnt_loc)
-        cylinder( h=ring_height, d=screw_diam );
+    //mirror([0,1,0])
+     // translate(col_mnt_loc)
+       // cylinder( h=ring_height, d=screw_diam );
 
   }
 
@@ -398,10 +400,10 @@ module x_collar_mount( height, diam ) {
 
     union() {
 
-      translate([ 0 - ( diam / 4 ), 0, 0])
-        cube([ diam / 2, diam / 4, height ]);
+      translate([ 0 - ( diam / 4 ), 0 - ( diam / 4 ), 0])
+        cube([ diam / 2, diam, height ]);
 
-      translate([0,0,0])
+      translate([0, 0 - ( diam / 4 ),0])
         rotate([0,0,0])
           cylinder(h=height,d=recess_diam);
 
@@ -416,7 +418,7 @@ module x_collar_mount( height, diam ) {
           fillet_linear_i(height, diam / 4, fillet_fn=standard_fn);
     }
 
-    translate([0,0,0])
+    translate([0,0 - ( diam /4 ),0])
       cylinder( h=height, d=diam / 4 );
 
   }
