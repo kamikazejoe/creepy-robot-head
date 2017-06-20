@@ -703,14 +703,14 @@ module y_servo_block_inverse() {
         recessed_screw_cutout(recess_depth,
                               recess_diam,
                               screw_length,
-                              screw_diam);
+                              screw_diameter);
 
     translate(screw_rec_loc[1])
       rotate([90,0,-90])
         recessed_screw_cutout(recess_depth,
                               recess_diam,
                               screw_length,
-                              screw_diam);
+                              screw_diameter);
 
     }
 
@@ -751,14 +751,14 @@ module y_axis_pivot() {
         recessed_screw_cutout(pivot_blk_z - screw_length,
                               recess_diam,
                               screw_length,
-                              screw_diam);
+                              screw_diameter);
 
     translate([pivot_blk_x - (recess_diam / 2) - print_gap, pivot_blk_y - (recess_diam / 2 + print_gap), 0])
       rotate([0,0,0])
         recessed_screw_cutout(pivot_blk_z - screw_length,
                               recess_diam,
                               screw_length,
-                              screw_diam);
+                              screw_diameter);
     
   }
 }
