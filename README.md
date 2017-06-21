@@ -10,7 +10,4 @@ I initially wanted to dabble with OpenCV a bit.  The very first version was made
 
 But it being made out of scraps, it was pretty fragile.  So I decided to design a new version from the ground up.
 
-Here's an version of the redesign in action:
-[![DEMO](https://img.youtube.com/vi/mfaZ9eao_OQ)](https://youtu.be/mfaZ9eao_OQ)
-
 That's all there is for the moment.  Things are a mess right now...
