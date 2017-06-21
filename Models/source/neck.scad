@@ -75,15 +75,6 @@ use <kamikaze_shapes.scad>;
 screw_diameter = 3;
 screw_head_diameter = 6;
 
-screw_diam   = screw_diameter;
-screw_length = screw_diameter + 1;
-recess_diam  = screw_head_diameter + print_gap;
-recess_depth = x_neck_radius - screw_diam - ( recess_diam / 2 );
-
-standard_fn = 100;
-print_gap = 2;
-
-
 x_neck_height = servo_dimension[0];
 
 x_neck_radius =  ( servo_top[1] / 2 )
@@ -96,6 +87,15 @@ x_neck_radius =  ( servo_top[1] / 2 )
                   // + servo overhang
                   // + Screw recess diameter
                   // + Screw Diameter ( Arbitrary figure for structure )
+
+screw_diam   = screw_diameter;
+screw_length = screw_diameter + 1;
+recess_diam  = screw_head_diameter + print_gap;
+recess_depth = x_neck_radius - screw_diameter - ( recess_diam / 2 );
+
+standard_fn = 100;
+print_gap = 2;
+
 
 
 
@@ -160,7 +160,7 @@ module x_rotor_disc() {
   disc_diam = 2 * x_neck_radius;
   disc_height = screw_head_diameter;
 
-  disc_track_loc = x_neck_radius - screw_diam - ( recess_diam / 2 );
+  disc_track_loc = x_neck_radius - screw_diameter - ( recess_diam / 2 );
 
   y_axis_radius = ( servo_overhang * 3 ) // 3 time for thicker structure
                   + servo_top[0]
@@ -245,7 +245,7 @@ module x_rotor_disc() {
     translate([0,0,disc_height + print_gap])
       rotate_extrude()
         translate([disc_track_loc,0,0])
-          circle( r=screw_diam + print_gap );
+          circle( r=screw_diameter + print_gap );
 
     // Screw points
     translate(screw_rec_loc[0])
@@ -253,28 +253,28 @@ module x_rotor_disc() {
         recessed_screw_cutout(recess_depth,
                               recess_diam,
                               screw_length,
-                              screw_diam);
+                              screw_diameter);
 
     translate(screw_rec_loc[1])
       rotate([0,0,0])
         recessed_screw_cutout(recess_depth,
                               recess_diam,
                               screw_length,
-                              screw_diam);
+                              screw_diameter);
 
     translate(screw_rec_loc[2])
       rotate([0,0,0])
         recessed_screw_cutout(recess_depth,
                               recess_diam,
                               screw_length,
-                              screw_diam);
+                              screw_diameter);
 
     translate(screw_rec_loc[3])
       rotate([0,0,0])
         recessed_screw_cutout(recess_depth,
                               recess_diam,
                               screw_length,
-                              screw_diam);
+                              screw_diameter);
   }
 
 }
@@ -434,7 +434,7 @@ module x_neck_A() {
                 0 - servo_cavity[1] / 2,
                 0];
 
-  screw_rec_loc_x = x_neck_radius - screw_diam - ( recess_diam / 2 );
+  screw_rec_loc_x = x_neck_radius - screw_diameter - ( recess_diam / 2 );
   screw_rec_loc_y = 1;
   screw_rec_loc_z = x_neck_height / 2;
 
@@ -492,19 +492,20 @@ module x_neck_A() {
 
 
     // Screw points
+    echo( screw_rec_loc );
     translate(screw_rec_loc[0])
       rotate([90,0,0])
         recessed_screw_cutout(recess_depth,
                               recess_diam,
                               screw_length,
-                              screw_diam);
+                              screw_diameter);
 
     translate(screw_rec_loc[1])
       rotate([90,0,0])
         recessed_screw_cutout(recess_depth,
                               recess_diam,
                               screw_length,
-                              screw_diam);
+                              screw_diameter);
 
   }
 
@@ -512,7 +513,7 @@ module x_neck_A() {
   translate([0,0,x_neck_height]) // Will need to be adjusted for servo horn.
     rotate([0,0,-72])
       make_ring_of(screw_rec_loc_x, 5, 180)
-        sphere(screw_diam);
+        sphere(screw_diameter);
 
 
   // Collar mount points

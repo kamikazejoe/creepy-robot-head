@@ -232,19 +232,20 @@ module pivot_screw_holes() {
 
     pivot_blk_width = ( servo_overhang * 3 ) // 3 time for thicker structure
                     + servo_top[0]
-                    + ( servo_top[1] / 2);
-                    //+ ( 2 * screw_head_diameter )
-                    //+ (3 * print_gap);
+                    + ( servo_top[1] / 2)
+                    + print_gap
+                    + ( 2 * screw_head_diameter )
+                    + ( 2 * print_gap );  // y_axis_radius + pivot_blk_y
 
 // Left Side
-    translate([ bone_length - ( recess_diam / 2 ) - print_gap, 
+    translate([ bone_length - ( recess_diam / 2  + print_gap ), 
                 0 - lower_offset + screw_length, 
                 ( recess_diam / 2 ) + print_gap ])
 
       rotate([90,0,0])
         cylinder( h=screw_length, d=screw_diam );
 
-    translate([ bone_length - pivot_blk_width - ( recess_diam / 2 ) - print_gap, 
+    translate([ bone_length - pivot_blk_width - ( recess_diam / 2 + print_gap ), 
                 0 - lower_offset + screw_length, 
                 ( recess_diam / 2 ) + print_gap ])
 
@@ -252,14 +253,14 @@ module pivot_screw_holes() {
         cylinder( h=screw_length, d=screw_diam );
 
 // Right Side
-    translate([ bone_length - ( recess_diam / 2 ) - print_gap, 
+    translate([ bone_length - ( recess_diam / 2 + print_gap ), 
                 lower_width - lower_offset, 
                 ( recess_diam / 2 ) + print_gap ])
 
       rotate([90,0,0])
         cylinder( h=screw_length, d=screw_diam );
 
-    translate([ bone_length - pivot_blk_width - ( recess_diam / 2 ) - print_gap, 
+    translate([ bone_length - pivot_blk_width - ( recess_diam / 2 + print_gap ), 
                 lower_width - lower_offset, 
                 ( recess_diam / 2 ) + print_gap ])
 
