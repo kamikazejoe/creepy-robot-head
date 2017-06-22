@@ -186,10 +186,15 @@ module x_rotor_disc() {
 
 */
 
-
+/*
   screw_rec_loc_x0 = ((disc_diam / 2)
                      - (recess_diam * 1.5)
-                     - y_axis_radius);
+                     - y_axis_radius;
+*/
+
+  screw_rec_loc_x0 = ( ( servo_overhang * 3 )
+                     + servo_top[0]
+                     + ( servo_top[1] / 2) ) / 2;
 
   screw_rec_loc_y0 = (servo_dimension[1]
                      - servo_cavity[2]);
@@ -197,21 +202,32 @@ module x_rotor_disc() {
   screw_rec_loc_z0 = 0;
 
 
-
+/*
   screw_rec_loc_x1 = ((disc_diam / 2)
                      - (recess_diam * 1.5)
                      - y_axis_radius);
+*/
  
+  screw_rec_loc_x1 = ( ( servo_overhang * 3 )
+                     + servo_top[0]
+                     + ( servo_top[1] / 2) ) / 2;
+
   screw_rec_loc_y1 = 0 - (servo_dimension[1]
                      - servo_cavity[2]);
  
   screw_rec_loc_z1 = 0;
 
 
-
+/*
   screw_rec_loc_x2 = 0 - ((disc_diam / 2)
                      - (recess_diam * 1.5)
                      - y_axis_radius);
+*/
+
+  screw_rec_loc_x2 =  0 - ( ( servo_overhang * 3 )
+                      + servo_top[0]
+                      + ( servo_top[1] / 2) ) / 2;
+
 
   screw_rec_loc_y2 = (servo_dimension[1]
                      - servo_cavity[2]);
@@ -219,11 +235,16 @@ module x_rotor_disc() {
   screw_rec_loc_z2 = 0;
 
 
-
+/*
   screw_rec_loc_x3 = 0 - ((disc_diam / 2)
                      - (recess_diam * 1.5)
                      - y_axis_radius);
- 
+ */
+
+  screw_rec_loc_x3 = 0 - ( ( servo_overhang * 3 )
+                     + servo_top[0]
+                     + ( servo_top[1] / 2) ) / 2;
+
   screw_rec_loc_y3 = 0 - (servo_dimension[1]
                      - servo_cavity[2]);
 
