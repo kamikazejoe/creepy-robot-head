@@ -245,7 +245,7 @@ module pivot_screw_holes() {
       rotate([90,0,0])
         cylinder( h=screw_length, d=screw_diam );
 
-    translate([ bone_length - pivot_blk_width - ( recess_diam / 2 + print_gap ) + screw_diam, 
+    translate([ bone_length - pivot_blk_width + ( recess_diam / 2 + print_gap ), 
                 0 - lower_offset + screw_length, 
                 ( recess_diam / 2 ) + print_gap ])
 
@@ -260,7 +260,7 @@ module pivot_screw_holes() {
       rotate([90,0,0])
         cylinder( h=screw_length, d=screw_diam );
 
-    translate([ bone_length - pivot_blk_width - ( recess_diam / 2 + print_gap ) + screw_diam, 
+    translate([ bone_length - pivot_blk_width + ( recess_diam / 2 + print_gap ), 
                 lower_width - lower_offset, 
                 ( recess_diam / 2 ) + print_gap ])
 

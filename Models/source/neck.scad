@@ -769,14 +769,18 @@ module y_axis_pivot() {
 
 
     // Screw holes
-    translate([pivot_blk_x - (recess_diam / 2) - print_gap, recess_diam / 2 + print_gap, 0])
+    translate([ pivot_blk_x - (recess_diam / 2) - print_gap, 
+                recess_diam / 2 + print_gap, 
+                0])
       rotate([0,0,0])
         recessed_screw_cutout(pivot_blk_z - screw_length,
                               recess_diam,
                               screw_length,
                               screw_diameter);
 
-    translate([pivot_blk_x - (recess_diam / 2) - print_gap, pivot_blk_y - (recess_diam / 2 + print_gap), 0])
+    translate([ pivot_blk_x - (recess_diam / 2) - print_gap, 
+                pivot_blk_y - (recess_diam / 2 + print_gap), 
+                0])
       rotate([0,0,0])
         recessed_screw_cutout(pivot_blk_z - screw_length,
                               recess_diam,
