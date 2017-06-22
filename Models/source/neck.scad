@@ -304,7 +304,8 @@ module x_collar_ring() {
 
   //ring_height = screw_head_diameter * 2;
   
-  ring_height = x_neck_height + servo_side[5]; 
+  ring_height = x_neck_height + screw_head_diameter + servo_side[5]; 
+  // Equals: X-neck block height + rotor disc height + servo horn height
 
   cutout_radius = x_neck_radius - screw_diameter - ( recess_diam / 2 );
   groove_radius = x_neck_radius + print_gap;
@@ -337,8 +338,8 @@ module x_collar_ring() {
 
     cylinder( h=ring_height, r=cutout_radius );
 
-    translate([ 0 - ( recess_diam / 2 ), 0 - ring_radius, screw_length ])
-      cube([ recess_diam, ring_radius * 2, ring_height ]);
+    translate([ 0 - ( ( recess_diam + ( print_gap * 2 ) ) / 2 ), 0 - ring_radius, screw_length ])
+      cube([ recess_diam + ( print_gap * 2 ), ring_radius * 2, ring_height ]);
 
     //translate(col_mnt_loc)
       //cylinder( h=ring_height, d=screw_diam );
